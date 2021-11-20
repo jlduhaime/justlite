@@ -106,28 +106,28 @@ public class WesternDiaryRequirement extends GenericDiaryRequirement
 			new SkillRequirement(Skill.FIREMAKING, 50),
 			new QuestRequirement(Quest.MONKEY_MADNESS_I));
 		add("Mine some Adamantite ore in Tirannwn.",
-			new SkillRequirement(Skill.MINING, 70),
-			new QuestRequirement(Quest.REGICIDE));
+				new SkillRequirement(Skill.MINING, 70),
+				new QuestRequirement(Quest.REGICIDE));
 		add("Check the health of your Palm tree in Lletya.",
-			new SkillRequirement(Skill.FARMING, 68),
-			new QuestRequirement(Quest.MOURNINGS_END_PART_I, true));
+				new SkillRequirement(Skill.FARMING, 68),
+				new QuestRequirement(Quest.MOURNINGS_END_PART_I, true));
 		add("Claim a Chompy bird hat from Rantz after registering at least 300 kills.",
-			new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING));
+				new QuestRequirement(Quest.BIG_CHOMPY_BIRD_HUNTING));
 		add("Build an Isafdar painting in your POH Quest hall.",
-			new SkillRequirement(Skill.CONSTRUCTION, 65),
-			new QuestRequirement(Quest.ROVING_ELVES));
-		add("Kill Zulrah.",
-			new QuestRequirement(Quest.REGICIDE, true));
+				new SkillRequirement(Skill.CONSTRUCTION, 65),
+				new QuestRequirement(Quest.ROVING_ELVES));
+		add("Kill zulrah.",
+				new QuestRequirement(Quest.REGICIDE, true));
 		add("Teleport to Ape Atoll.",
-			new SkillRequirement(Skill.MAGIC, 64),
-			new QuestRequirement(Quest.RECIPE_FOR_DISASTER, true));
+				new SkillRequirement(Skill.MAGIC, 64),
+				new QuestRequirement(Quest.RECIPE_FOR_DISASTER, true));
 		add("Pickpocket a Gnome.",
-			new SkillRequirement(Skill.THIEVING, 75),
-			new QuestRequirement(Quest.TREE_GNOME_VILLAGE));
+				new SkillRequirement(Skill.THIEVING, 75),
+				new QuestRequirement(Quest.TREE_GNOME_VILLAGE));
 
 		// ELITE
 		add("Fletch a Magic Longbow in Tirannwn.",
-			new SkillRequirement(Skill.FLETCHING, 85),
+				new SkillRequirement(Skill.FLETCHING, 85),
 			new QuestRequirement(Quest.MOURNINGS_END_PART_I));
 		add("Kill the Thermonuclear Smoke devil (Does not require task).",
 			new SkillRequirement(Skill.SLAYER, 93));

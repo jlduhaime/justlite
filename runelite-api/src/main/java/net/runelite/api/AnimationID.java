@@ -224,6 +224,8 @@ public final class AnimationID
 	public static final int TZTOK_JAD_RANGE_ATTACK = 2652;
 	public static final int HELLHOUND_DEFENCE = 6566;
 
+	public static final int ZULRAH_PHASE = 5072;
+
 	// Farming
 	public static final int FARMING_HARVEST_FRUIT_TREE = 2280;
 	public static final int FARMING_HARVEST_BUSH = 2281;
@@ -258,6 +260,7 @@ public final class AnimationID
 	public static final int ROCKSLUG_DEATH = 1568;
 	public static final int ZYGOMITE_DEATH = 3327;
 	public static final int IMP_DEATH = 172;
+	public static final int ZULRAH_DEATH = 5804;
 
 	// POH Animations
 	public static final int INCENSE_BURNER = 3687;

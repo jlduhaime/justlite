@@ -116,7 +116,7 @@ public enum HiscoreSkill
 	VORKATH("Vorkath", BOSS),
 	WINTERTODT("Wintertodt", BOSS),
 	ZALCANO("Zalcano", BOSS),
-	ZULRAH("Zulrah", BOSS);
+	ZULRAH("zulrah", BOSS);
 
 	private final String name;
 	private final HiscoreSkillType type;

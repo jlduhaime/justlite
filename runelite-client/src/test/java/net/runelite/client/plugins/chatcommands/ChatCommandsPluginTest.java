@@ -284,7 +284,7 @@ public class ChatCommandsPluginTest
 		final String FIGHT_DURATION_PRECISE = "Fight duration: <col=ff0000>0:59.20</col>. Personal best: 0:55.40";
 
 		// This sets lastBoss
-		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your Zulrah kill count is: <col=ff0000>4</col>.", null, 0);
+		ChatMessage chatMessage = new ChatMessage(null, GAMEMESSAGE, "", "Your zulrah kill count is: <col=ff0000>4</col>.", null, 0);
 		chatCommandsPlugin.onChatMessage(chatMessage);
 
 		chatMessage = new ChatMessage(null, GAMEMESSAGE, "", FIGHT_DURATION, null, 0);
@@ -559,7 +559,7 @@ public class ChatCommandsPluginTest
 		chatMessage.setMessageNode(messageNode);
 		chatCommandsPlugin.playerSkillLookup(chatMessage, "!lvl zulrah");
 
-		verify(messageNode).setRuneLiteFormatMessage("<colNORMAL>Level <colHIGHLIGHT>Zulrah: 1000<colNORMAL> Rank: <colHIGHLIGHT>10");
+		verify(messageNode).setRuneLiteFormatMessage("<colNORMAL>Level <colHIGHLIGHT>zulrah: 1000<colNORMAL> Rank: <colHIGHLIGHT>10");
 	}
 
 	@Test
@@ -951,41 +951,41 @@ public class ChatCommandsPluginTest
 	public void testCounters()
 	{
 		final String[] log = {
-			"Chompy Hunting",
-			"Kills: <col=ffffff>1,003</col>",
-			"Rank: <col=ffffff>Ogre Expert</col>",
-			"",
-			"Order of the White Knights",
-			"Rank: <col=ffffff>Master</col>",
-			"with a kill score of <col=ffffff>1,300</col>",
-			"",
-			"TzHaar Fight Cave",
-			"Fastest run: <col=ffffff>33:53</col>",
-			"",
-			"Inferno",
-			"Fastest run: <col=ffffff>2:02:20</col>",
-			"",
-			"Zulrah",
-			"Fastest kill: <col=ffffff>0:47</col>",
-			"",
-			"Vorkath",
-			"Fastest kill: <col=ffffff>1:04</col>",
-			"",
-			"Galvek",
-			"Fastest kill: <col=ffffff>-</col>",
-			"",
-			"Grotesque Guardians",
-			"Fastest kill: <col=ffffff>1:20</col>",
-			"",
-			"Alchemical Hydra",
-			"Fastest kill: <col=ffffff>1:34</col>",
-			"",
-			"Hespori",
-			"Fastest kill: <col=ffffff>1:24</col>",
-			"",
-			// Nightmare is here 3x!
-			"Nightmare", // including one only called "Nightmare"
-			"Fastest kill: <col=ffffff>-</col>", // with no time
+				"Chompy Hunting",
+				"Kills: <col=ffffff>1,003</col>",
+				"Rank: <col=ffffff>Ogre Expert</col>",
+				"",
+				"Order of the White Knights",
+				"Rank: <col=ffffff>Master</col>",
+				"with a kill score of <col=ffffff>1,300</col>",
+				"",
+				"TzHaar Fight Cave",
+				"Fastest run: <col=ffffff>33:53</col>",
+				"",
+				"Inferno",
+				"Fastest run: <col=ffffff>2:02:20</col>",
+				"",
+				"zulrah",
+				"Fastest kill: <col=ffffff>0:47</col>",
+				"",
+				"Vorkath",
+				"Fastest kill: <col=ffffff>1:04</col>",
+				"",
+				"Galvek",
+				"Fastest kill: <col=ffffff>-</col>",
+				"",
+				"Grotesque Guardians",
+				"Fastest kill: <col=ffffff>1:20</col>",
+				"",
+				"Alchemical Hydra",
+				"Fastest kill: <col=ffffff>1:34</col>",
+				"",
+				"Hespori",
+				"Fastest kill: <col=ffffff>1:24</col>",
+				"",
+				// Nightmare is here 3x!
+				"Nightmare", // including one only called "Nightmare"
+				"Fastest kill: <col=ffffff>-</col>", // with no time
 			"",
 			"The Nightmare",
 			"Fastest kill - (Team size: 6+ players): <col=ffffff>3:22</col>",

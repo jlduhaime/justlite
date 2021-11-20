@@ -184,27 +184,27 @@ enum Task
 	ZILYANA("Commander Zilyana", ItemID.PET_ZILYANA),
 	ZOMBIES("Zombies", ItemID.ZOMBIE_HEAD, "Undead"),
 	ZUK("TzKal-Zuk", ItemID.TZREKZUK, 101890),
-	ZULRAH("Zulrah", ItemID.PET_SNAKELING);
+	ZULRAH("zulrah", ItemID.PET_SNAKELING);
 	//</editor-fold>
 
 	private static final Map<String, Task> tasks;
 	static final List<String> LOCATIONS = ImmutableList.of(
-		"", // no location is a valid location
-		"Abyss",
-		"Ancient Cavern",
-		"Asgarnian Ice Dungeon",
-		"Battlefront",
-		"Brimhaven Dungeon",
-		"Brine Rat Cavern",
-		"Catacombs of Kourend",
-		"Chasm of Fire",
-		"Clan Wars",
-		"Death Plateau",
-		"Evil Chicken's Lair",
-		"Fossil Island",
-		"Forthos Dungeon",
-		"Fremennik Slayer Dungeon",
-		"God Wars Dungeon",
+			"", // no location is a valid location
+			"Abyss",
+			"Ancient Cavern",
+			"Asgarnian Ice Dungeon",
+			"Battlefront",
+			"Brimhaven Dungeon",
+			"Brine Rat Cavern",
+			"Catacombs of Kourend",
+			"Chasm of Fire",
+			"Clan Wars",
+			"Death Plateau",
+			"Evil Chicken's Lair",
+			"Fossil Island",
+			"Forthos Dungeon",
+			"Fremennik Slayer Dungeon",
+			"God Wars Dungeon",
 		"Iorwerth Dungeon",
 		"Isle of Souls",
 		"Jormungand's Prison",

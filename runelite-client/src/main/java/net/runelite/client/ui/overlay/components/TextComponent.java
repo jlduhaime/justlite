@@ -38,10 +38,10 @@ import net.runelite.client.util.ColorUtil;
 import net.runelite.client.util.Text;
 
 @Setter
-public class TextComponent implements RenderableEntity
-{
+public class TextComponent implements RenderableEntity {
 	private static final String COL_TAG_REGEX = "(<col=([0-9a-fA-F]){2,6}>)";
 	private static final Pattern COL_TAG_PATTERN_W_LOOKAHEAD = Pattern.compile("(?=" + COL_TAG_REGEX + ")");
+	private static final Pattern COL_TAG_PATTERN = Pattern.compile(COL_TAG_REGEX);
 
 	private String text;
 	private Point position = new Point();
@@ -53,25 +53,25 @@ public class TextComponent implements RenderableEntity
 	@Nullable
 	private Font font;
 
+	public static String textWithoutColTags(String text) {
+		return COL_TAG_PATTERN.matcher(text).replaceAll("");
+	}
+
 	@Override
-	public Dimension render(Graphics2D graphics)
-	{
+	public Dimension render(Graphics2D graphics) {
 		Font originalFont = null;
-		if (font != null)
-		{
+		if (font != null) {
 			originalFont = graphics.getFont();
 			graphics.setFont(font);
 		}
 
 		final FontMetrics fontMetrics = graphics.getFontMetrics();
 
-		if (COL_TAG_PATTERN_W_LOOKAHEAD.matcher(text).find())
-		{
+		if (COL_TAG_PATTERN_W_LOOKAHEAD.matcher(text).find()) {
 			final String[] parts = COL_TAG_PATTERN_W_LOOKAHEAD.split(text);
 			int x = position.x;
 
-			for (String textSplitOnCol : parts)
-			{
+			for (String textSplitOnCol : parts) {
 				final String textWithoutCol = Text.removeTags(textSplitOnCol);
 				final String colColor = textSplitOnCol.substring(textSplitOnCol.indexOf("=") + 1, textSplitOnCol.indexOf(">"));
 

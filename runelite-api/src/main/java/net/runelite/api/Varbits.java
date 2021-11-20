@@ -608,7 +608,7 @@ public enum Varbits
 
 	/**
 	 * Whether the Special Attack orb is disabled due to being in a PvP area
-	 *
+	 * <p>
 	 * 0 = Enabled (player is not in PvP)
 	 * 1 = Disabled (player in in PvP)
 	 *
@@ -618,14 +618,19 @@ public enum Varbits
 
 	/**
 	 * Collection Log notification settings whenever a new item is added
-	 *
+	 * <p>
 	 * 0 = no notification
 	 * 1 = chat notification only
 	 * 2 = popup notification only
 	 * 3 = chat and popup
 	 */
 	COLLECTION_LOG_NOTIFICATION(11959),
+	GAUNTLET_FINAL_ROOM_ENTERED(9177),
 
+	/**
+	 * 1 is true, 0 is false.
+	 */
+	GAUNTLET_ENTERED(9178),
 	/**
 	 * Show boss health overlay setting
 	 * 0 = on
