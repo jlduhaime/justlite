@@ -26,16 +26,23 @@ package net.runelite.client.ui.overlay;
 
 import com.google.common.base.Strings;
 
-import java.awt.*;
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.Polygon;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.Shape;
+import java.awt.Stroke;
 import java.awt.image.BufferedImage;
 
-import net.runelite.api.Actor;
-import net.runelite.api.Client;
-import net.runelite.api.Perspective;
-import net.runelite.api.Point;
-import net.runelite.api.TileObject;
+import net.runelite.api.*;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
+import net.runelite.api.vars.InterfaceTab;
+import net.runelite.api.widgets.Widget;
 import net.runelite.client.util.ColorUtil;
 
 public class OverlayUtil
@@ -296,5 +303,62 @@ public class OverlayUtil
 			}
 			renderTextLocation(graphics, canvasCenterPoint, txtString, fontColor);
 		}
+	}
+
+	public static void renderAreaTilePolygon(Graphics2D graphics, Shape poly, Color color) {
+		graphics.setColor(new Color(color.getRed(), color.getGreen(), color.getBlue(), 10));
+		graphics.fill(poly);
+	}
+
+	public static void renderFullLine(Graphics2D graphics, int[][] line, Color color) {
+		graphics.setColor(color);
+		final Stroke originalStroke = graphics.getStroke();
+		graphics.setStroke(new BasicStroke(2));
+		graphics.drawLine(line[0][0], line[0][1], line[1][0], line[1][1]);
+		graphics.setStroke(originalStroke);
+	}
+
+	public static void renderDashedLine(Graphics2D graphics, int[][] line, Color color) {
+		graphics.setColor(color);
+		final Stroke originalStroke = graphics.getStroke();
+		graphics.setStroke(new BasicStroke(2, BasicStroke.CAP_BUTT, BasicStroke.JOIN_BEVEL, 0, new float[]{9}, 0));
+		graphics.drawLine(line[0][0], line[0][1], line[1][0], line[1][1]);
+		graphics.setStroke(originalStroke);
+	}
+
+	public static void renderFilledPolygon(Graphics2D graphics, Shape poly, Color color) {
+		graphics.setColor(color);
+		final Stroke originalStroke = graphics.getStroke();
+		graphics.setStroke(new BasicStroke(2));
+		graphics.draw(poly);
+		graphics.fill(poly);
+		graphics.setStroke(originalStroke);
+	}
+
+	public static void renderOutlinePolygon(Graphics2D graphics, Shape poly, Color color) {
+		graphics.setColor(color);
+		final Stroke originalStroke = graphics.getStroke();
+		graphics.setStroke(new BasicStroke(2));
+		graphics.draw(poly);
+		graphics.setStroke(originalStroke);
+	}
+
+	public static Rectangle renderPrayerOverlay(Graphics2D graphics, Client client, Prayer prayer, Color color) {
+		Widget widget = client.getWidget(prayer.getWidgetInfo());
+
+		if (widget == null || client.getVar(VarClientInt.INTERFACE_TAB) != InterfaceTab.PRAYER.getId()) {
+			return null;
+		}
+
+		Rectangle bounds = widget.getBounds();
+		renderPolygon(graphics, rectangleToPolygon(bounds), color);
+		return bounds;
+	}
+
+	private static Polygon rectangleToPolygon(Rectangle rect) {
+		int[] xpoints = {rect.x, rect.x + rect.width, rect.x + rect.width, rect.x};
+		int[] ypoints = {rect.y, rect.y, rect.y + rect.height, rect.y + rect.height};
+
+		return new Polygon(xpoints, ypoints, 4);
 	}
 }

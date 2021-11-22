@@ -65,4 +65,5 @@ public class NpcDefinition
 	public boolean isPet;
 	public Map<Integer, Object> params;
 	public int category;
+	public int attackSpeed;
 }

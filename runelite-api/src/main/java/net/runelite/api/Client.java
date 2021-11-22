@@ -47,8 +47,14 @@ import net.runelite.api.widgets.WidgetInfo;
 /**
  * Represents the RuneScape client.
  */
-public interface Client extends GameEngine
-{
+public interface Client extends GameEngine {
+	/**
+	 * Increments the counter for how many times this npc has been selected to be hidden on death
+	 *
+	 * @param name npc name
+	 */
+	void addHiddenNpcDeath(String name);
+
 	/**
 	 * The injected client invokes these callbacks to send events to us
 	 */
@@ -1953,11 +1959,15 @@ public interface Client extends GameEngine
 	ClanSettings getClanSettings(int clanId);
 
 	void setUnlockedFps(boolean unlock);
+
 	void setUnlockedFpsTarget(int fps);
 
 	/**
 	 * Gets the ambient sound effects
+	 *
 	 * @return
 	 */
 	Deque<AmbientSoundEffect> getAmbientSoundEffects();
+
+	void removeHiddenNpcDeath(String s);
 }
