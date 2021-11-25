@@ -159,6 +159,14 @@ public interface MenuEntrySwapperConfig extends Config
 	}
 
 	@ConfigItem(
+			keyName = "swapPickpocket",
+			name = "Pickpocket",
+			description = "",
+			section = npcSection
+	)
+	default boolean swapPickpocket() { return true; }
+
+	@ConfigItem(
 		keyName = "swapBirdhouseEmpty",
 		name = "Birdhouse",
 		description = "Swap Interact with Empty for birdhouses on Fossil Island",
