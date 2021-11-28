@@ -501,7 +501,7 @@ public class InventorySetupsPlugin extends Plugin
         }
         catch (Exception e)
         {
-            log.warn("Could not determine current plugin version", e);
+            //log.warn("Could not determine current plugin version", e);
             this.currentVersion = "";
         }
 
