@@ -628,9 +628,18 @@ public enum Varbits
 	GAUNTLET_FINAL_ROOM_ENTERED(9177),
 
 	/**
+<<<<<<< HEAD
 	 * 1 is true, 0 is false.
 	 */
 	GAUNTLET_ENTERED(9178),
+
+	 /* Combat Achievements popup settings whenever a new task is completed
+	 *
+	 * 0 = popup notification enabled
+	 * 1 = popup notification disabled
+	 */
+	COMBAT_ACHIEVEMENTS_POPUP(12455),
+
 	/**
 	 * Show boss health overlay setting
 	 * 0 = on
