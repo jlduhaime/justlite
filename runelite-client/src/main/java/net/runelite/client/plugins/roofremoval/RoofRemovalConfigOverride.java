@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2021 Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,24 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.plugins.roofremoval;
 
-import java.awt.Shape;
+import lombok.Getter;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Predicate;
 
-/**
- * Represents a decorative object, such as an object on a wall.
- */
-public interface DecorativeObject extends TileObject
+@Getter
+enum RoofRemovalConfigOverride
 {
-	/**
-	 * Gets the convex hull of the objects model.
-	 *
-	 * @return the convex hull
-	 * @see net.runelite.api.model.Jarvis
-	 */
-	Shape getConvexHull();
-	Shape getConvexHull2();
+	POH(RoofRemovalConfig::overridePOH, 7257, 7513, 7514, 7769, 7770, 8025, 8026);
 
-	Renderable getRenderable();
-	Renderable getRenderable2();
+	private final Predicate<RoofRemovalConfig> enabled;
+	private final List<Integer> regions;
 
-	/**
-	 * Decorative object x offset. This is added to the x position of the object, and is used to
-	 * account for walls of varying widths.
-	 */
-	int getXOffset();
-
-	/**
-	 * Decorative object y offset. This is added to the z position of the object, and is used to
-	 * account for walls of varying widths.
-	 */
-	int getYOffset();
-
-	/**
-	 * A bitfield containing various flags:
-	 * <pre>{@code
-	 * object type id = bits & 0x20
-	 * orientation (0-3) = bits >>> 6 & 3
-	 * supports items = bits >>> 8 & 1
-	 * }</pre>
-	 */
-	int getConfig();
+	RoofRemovalConfigOverride(Predicate<RoofRemovalConfig> enabled, Integer... regions)
+	{
+		this.enabled = enabled;
+		this.regions = Arrays.asList(regions);
+	}
 }

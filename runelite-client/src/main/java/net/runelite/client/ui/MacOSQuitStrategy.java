@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,46 +22,27 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.api;
+package net.runelite.client.ui;
 
-import java.awt.Shape;
+import com.apple.eawt.Application;
+import com.apple.eawt.QuitStrategy;
 
-/**
- * Represents a decorative object, such as an object on a wall.
- */
-public interface DecorativeObject extends TileObject
+class MacOSQuitStrategy
 {
-	/**
-	 * Gets the convex hull of the objects model.
-	 *
-	 * @return the convex hull
-	 * @see net.runelite.api.model.Jarvis
-	 */
-	Shape getConvexHull();
-	Shape getConvexHull2();
-
-	Renderable getRenderable();
-	Renderable getRenderable2();
-
-	/**
-	 * Decorative object x offset. This is added to the x position of the object, and is used to
-	 * account for walls of varying widths.
-	 */
-	int getXOffset();
-
-	/**
-	 * Decorative object y offset. This is added to the z position of the object, and is used to
-	 * account for walls of varying widths.
-	 */
-	int getYOffset();
-
-	/**
-	 * A bitfield containing various flags:
-	 * <pre>{@code
-	 * object type id = bits & 0x20
-	 * orientation (0-3) = bits >>> 6 & 3
-	 * supports items = bits >>> 8 & 1
-	 * }</pre>
-	 */
-	int getConfig();
+	public static void setup()
+	{
+		try
+		{
+			// com.apple.eawt.QuitStrategy was moved to java.desktop in Java 9,
+			// but our OrangeExtensions API targets 1.6, so this code is only valid
+			// on 8 below.
+			Application.getApplication()
+				.setQuitStrategy(QuitStrategy.CLOSE_ALL_WINDOWS);
+		}
+		catch (NoClassDefFoundError ex)
+		{
+			// IntelliJ doesn't handle our multi-release Maven setup well, and will run
+			// this class on 11+. Ignore the error so the client can launch.
+		}
+	}
 }
