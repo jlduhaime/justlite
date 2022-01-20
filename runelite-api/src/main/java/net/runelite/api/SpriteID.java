@@ -1654,4 +1654,9 @@ public final class SpriteID
 	public static final int SPELL_RESURRECT_GREATER_ZOMBIE = 2984;
 	/* Unmapped: 2985~2986 */
 	public static final int SPELL_RESURRECT_SUPERIOR_SKELETON_DISABLED = 2987;
+	public static final int BIG_ASS_GUTHIX_SPELL = 1774;
+	public static final int BIG_ASS_GREY_ENTANGLE = 1788;
+	public static final int BIG_ASS_WHITE_ENTANGLE = 1789;
+	public static final int BIG_SUPERHEAT = 1800;
+	public static final int BIG_SPEC_TRANSFER = 1959;
 }

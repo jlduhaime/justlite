@@ -291,4 +291,26 @@ public final class AnimationID
 	public static final int KET_ZEK_MAGE_ATTACK = 2647;
 	public static final int MEJ_KOT_MELEE_ATTACK = 2637;
 	public static final int MEJ_KOT_HEAL_ATTACK = 2639;
+
+	// Hydra
+	public static final int HYDRA_POISON_1 = 8234;
+	public static final int HYDRA_RANGED_1 = 8235;
+	public static final int HYDRA_MAGIC_1 = 8236;
+	public static final int HYDRA_1_1 = 8237;
+	public static final int HYDRA_1_2 = 8238;
+	public static final int HYDRA_LIGHTNING = 8241;
+	public static final int HYDRA_RANGED_2 = 8242;
+	public static final int HYDRA_MAGIC_2 = 8243;
+	public static final int HYDRA_2_1 = 8244;
+	public static final int HYDRA_2_2 = 8245;
+	public static final int HYDRA_FIRE = 8248;
+	public static final int HYDRA_RANGED_3 = 8249;
+	public static final int HYDRA_MAGIC_3 = 8250;
+	public static final int HYDRA_3_1 = 8251;
+	public static final int HYDRA_3_2 = 8252;
+	public static final int HYDRA_MAGIC_4 = 8254;
+	public static final int HYDRA_POISON_4 = 8254;
+	public static final int HYDRA_RANGED_4 = 8255;
+	public static final int HYDRA_4_1 = 8257;
+	public static final int HYDRA_4_2 = 8258;
 }

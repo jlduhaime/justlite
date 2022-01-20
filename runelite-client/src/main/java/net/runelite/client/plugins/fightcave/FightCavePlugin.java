@@ -184,7 +184,7 @@ public class FightCavePlugin extends Plugin {
         }
 
         NPC npc = event.getNpc();
-        log.debug("NPC SPAWNED: {}", npc.getName());
+        //log.debug("NPC SPAWNED: {}", npc.getName());
         switch (npc.getId()) {
             case NpcID.TOKXIL_3121:
             case NpcID.TOKXIL_3122:
@@ -226,7 +226,7 @@ public class FightCavePlugin extends Plugin {
     @Subscribe
     private void onGameTick(GameTick Event) {
         if (!validRegion) {
-            log.debug("not in fight caves...");
+            //log.debug("not in fight caves...");
             return;
         }
 
