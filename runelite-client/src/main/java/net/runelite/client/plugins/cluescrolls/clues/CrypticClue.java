@@ -24,10 +24,11 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Set;
+import java.util.List;
 import javax.annotation.Nullable;
 import lombok.Getter;
 import net.runelite.api.NPC;
@@ -51,17 +52,17 @@ import net.runelite.client.ui.overlay.components.TitleComponent;
 @Getter
 public class CrypticClue extends ClueScroll implements TextClueScroll, NpcClueScroll, ObjectClueScroll
 {
-	public static final Set<CrypticClue> CLUES = ImmutableSet.of(
-		new CrypticClue("Show this to Sherlock.", "Sherlock", new WorldPoint(2733, 3415, 0), "Sherlock is located to the east of the Sorcerer's tower in Seers' Village."),
-		new CrypticClue("Talk to the bartender of the Rusty Anchor in Port Sarim.", "Bartender", new WorldPoint(3045, 3256, 0), "The Rusty Anchor is located in the north of Port Sarim."),
-		new CrypticClue("The keeper of Melzars... Spare? Skeleton? Anar?", "Oziach", new WorldPoint(3068, 3516, 0), "Speak to Oziach in Edgeville."),
-		new CrypticClue("Speak to Ulizius.", "Ulizius", new WorldPoint(3444, 3461, 0), "Ulizius is the monk who guards the gate into Mort Myre Swamp. South of fairy ring CKS."),
-		new CrypticClue("Search for a crate in a building in Hemenster.", CRATE_357, new WorldPoint(2636, 3453, 0), "House northwest of the Ranging Guild. West of Grandpa Jack."),
-		new CrypticClue("A reck you say; let's pray there aren't any ghosts.", "Father Aereck", new WorldPoint(3242, 3207, 0), "Speak to Father Aereck in Lumbridge."),
-		new CrypticClue("Search the bucket in the Port Sarim jail.", BUCKET_9568, new WorldPoint(3013, 3179, 0), "Talk to Shantay & identify yourself as an outlaw, refuse to pay the 5gp fine twice and you will be sent to the Port Sarim jail."),
-		new CrypticClue("Search the crates in a bank in Varrock.", CRATE_5107, new WorldPoint(3187, 9825, 0), "Search in the basement of the West Varrock bank."),
-		new CrypticClue("Falo the bard wants to see you.", "Falo the Bard", new WorldPoint(2689, 3550, 0), "Speak to Falo the Bard located between Seers' Village and Rellekka. Southwest of fairy ring CJR."),
-		new CrypticClue("Search a bookcase in the Wizards tower.", BOOKCASE_12539, new WorldPoint(3113, 3159, 0), "The bookcase located on the ground floor of the Wizards' Tower. Fairy ring DIS."),
+    public static final List<CrypticClue> CLUES = ImmutableList.of(
+            new CrypticClue("Show this to Sherlock.", "Sherlock", new WorldPoint(2733, 3415, 0), "Sherlock is located to the east of the Sorcerer's tower in Seers' Village."),
+            new CrypticClue("Talk to the bartender of the Rusty Anchor in Port Sarim.", "Bartender", new WorldPoint(3045, 3256, 0), "The Rusty Anchor is located in the north of Port Sarim."),
+            new CrypticClue("The keeper of Melzars... Spare? Skeleton? Anar?", "Oziach", new WorldPoint(3068, 3516, 0), "Speak to Oziach in Edgeville."),
+            new CrypticClue("Speak to Ulizius.", "Ulizius", new WorldPoint(3444, 3461, 0), "Ulizius is the monk who guards the gate into Mort Myre Swamp. South of fairy ring CKS."),
+            new CrypticClue("Search for a crate in a building in Hemenster.", CRATE_357, new WorldPoint(2636, 3453, 0), "House northwest of the Ranging Guild. West of Grandpa Jack."),
+            new CrypticClue("A reck you say; let's pray there aren't any ghosts.", "Father Aereck", new WorldPoint(3242, 3207, 0), "Speak to Father Aereck in Lumbridge."),
+            new CrypticClue("Search the bucket in the Port Sarim jail.", BUCKET_9568, new WorldPoint(3013, 3179, 0), "Talk to Shantay & identify yourself as an outlaw, refuse to pay the 5gp fine twice and you will be sent to the Port Sarim jail."),
+            new CrypticClue("Search the crates in a bank in Varrock.", CRATE_5107, new WorldPoint(3187, 9825, 0), "Search in the basement of the West Varrock bank."),
+            new CrypticClue("Falo the bard wants to see you.", "Falo the Bard", new WorldPoint(2689, 3550, 0), "Speak to Falo the Bard located between Seers' Village and Rellekka. Southwest of fairy ring CJR."),
+            new CrypticClue("Search a bookcase in the Wizards tower.", BOOKCASE_12539, new WorldPoint(3113, 3159, 0), "The bookcase located on the ground floor of the Wizards' Tower. Fairy ring DIS."),
 		new CrypticClue("Come have a cip with this great soot covered denizen.", "Miner Magnus", new WorldPoint(2527, 3891, 0), "Talk to Miner Magnus on Miscellania, east of the fairy ring CIP. Answer: 8", "How many coal rocks are around here?"),
 		new CrypticClue("Citric cellar.", "Heckel Funch", new WorldPoint(2490, 3488, 0), "Speak to Heckel Funch on the first floor in the Grand Tree."),
 		new CrypticClue("I burn between heroes and legends.", "Candle maker", new WorldPoint(2799, 3438, 0), "Speak to the Candle maker in Catherby."),

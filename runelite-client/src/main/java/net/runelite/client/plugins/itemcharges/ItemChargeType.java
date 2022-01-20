@@ -41,17 +41,18 @@ enum ItemChargeType
 	EXPEDITIOUS_BRACELET(ItemChargeConfig::showExpeditiousBraceletCharges),
 	FUNGICIDE_SPRAY(ItemChargeConfig::showFungicideCharges),
 	IMPBOX(ItemChargeConfig::showImpCharges),
-	TELEPORT(ItemChargeConfig::showTeleportCharges),
-	WATERCAN(ItemChargeConfig::showWateringCanCharges),
-	WATERSKIN(ItemChargeConfig::showWaterskinCharges),
-	DODGY_NECKLACE(ItemChargeConfig::showDodgyCount),
-	BINDING_NECKLACE(ItemChargeConfig::showBindingNecklaceCharges),
-	EXPLORER_RING(ItemChargeConfig::showExplorerRingCharges),
-	FRUIT_BASKET(ItemChargeConfig::showBasketCharges),
-	SACK(ItemChargeConfig::showSackCharges),
-	RING_OF_FORGING(ItemChargeConfig::showRingOfForgingCount),
-	POTION(ItemChargeConfig::showPotionDoseCount),
-	GUTHIX_REST(ItemChargeConfig::showGuthixRestDoses);
+    TELEPORT(ItemChargeConfig::showTeleportCharges),
+    WATERCAN(ItemChargeConfig::showWateringCanCharges),
+    WATERSKIN(ItemChargeConfig::showWaterskinCharges),
+    DODGY_NECKLACE(ItemChargeConfig::showDodgyCount),
+    BINDING_NECKLACE(ItemChargeConfig::showBindingNecklaceCharges),
+    EXPLORER_RING(ItemChargeConfig::showExplorerRingCharges),
+    FRUIT_BASKET(ItemChargeConfig::showBasketCharges),
+    SACK(ItemChargeConfig::showSackCharges),
+    RING_OF_FORGING(ItemChargeConfig::showRingOfForgingCount),
+    POTION(ItemChargeConfig::showPotionDoseCount),
+    GUTHIX_REST(ItemChargeConfig::showGuthixRestDoses),
+    BLOOD_ESSENCE(ItemChargeConfig::showBloodEssenceCharges);
 
-	private final Predicate<ItemChargeConfig> enabled;
+    private final Predicate<ItemChargeConfig> enabled;
 }

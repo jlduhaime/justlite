@@ -28,6 +28,7 @@ package net.runelite.client.ui.overlay.infobox;
 import com.google.common.base.Strings;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -112,40 +113,41 @@ public class InfoBoxOverlay extends OverlayPanel
 			hoveredComponent = null;
 		}
 
-		if (infoBoxes.isEmpty())
-		{
-			return null;
-		}
+        if (infoBoxes.isEmpty()) {
+            return null;
+        }
 
-		// Set preferred size to the size of DEFAULT_WRAP_COUNT infoboxes, including the padding - which is applied
-		// to the last infobox prior to wrapping too.
-		panelComponent.setPreferredSize(new Dimension(DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP), DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP)));
-		panelComponent.setOrientation(orientation);
+        // Set preferred size to the size of DEFAULT_WRAP_COUNT infoboxes, including the padding - which is applied
+        // to the last infobox prior to wrapping too.
+        panelComponent.setPreferredSize(new Dimension(DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP), DEFAULT_WRAP_COUNT * (config.infoBoxSize() + GAP)));
+        panelComponent.setOrientation(orientation);
 
-		for (InfoBox box : infoBoxes)
-		{
-			if (!box.render())
-			{
-				continue;
-			}
+        final Font font = config.infoboxFontType().getFont();
+        final boolean infoBoxTextOutline = config.infoBoxTextOutline();
+        final Color overlayBackgroundColor = config.overlayBackgroundColor();
+        final Dimension preferredSize = new Dimension(config.infoBoxSize(), config.infoBoxSize());
+        for (InfoBox box : infoBoxes) {
+            if (!box.render()) {
+                continue;
+            }
 
-			final String text = box.getText();
-			final Color color = box.getTextColor();
+            final String text = box.getText();
+            final Color color = box.getTextColor();
 
-			final InfoBoxComponent infoBoxComponent = new InfoBoxComponent();
-			infoBoxComponent.setText(text);
-			if (color != null)
-			{
-				infoBoxComponent.setColor(color);
-			}
-			infoBoxComponent.setOutline(config.infoBoxTextOutline());
-			infoBoxComponent.setImage(box.getScaledImage());
-			infoBoxComponent.setTooltip(box.getTooltip());
-			infoBoxComponent.setPreferredSize(new Dimension(config.infoBoxSize(), config.infoBoxSize()));
-			infoBoxComponent.setBackgroundColor(config.overlayBackgroundColor());
-			infoBoxComponent.setInfoBox(box);
-			panelComponent.getChildren().add(infoBoxComponent);
-		}
+            final InfoBoxComponent infoBoxComponent = new InfoBoxComponent();
+            infoBoxComponent.setText(text);
+            infoBoxComponent.setFont(font);
+            if (color != null) {
+                infoBoxComponent.setColor(color);
+            }
+            infoBoxComponent.setOutline(infoBoxTextOutline);
+            infoBoxComponent.setImage(box.getScaledImage());
+            infoBoxComponent.setTooltip(box.getTooltip());
+            infoBoxComponent.setPreferredSize(preferredSize);
+            infoBoxComponent.setBackgroundColor(overlayBackgroundColor);
+            infoBoxComponent.setInfoBox(box);
+            panelComponent.getChildren().add(infoBoxComponent);
+        }
 
 		final Dimension dimension = super.render(graphics);
 

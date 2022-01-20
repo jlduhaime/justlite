@@ -68,99 +68,107 @@ public interface EntityHiderConfig extends Config
 	}
 
 	@ConfigItem(
-		position = 4,
-		keyName = "hideClanMates",
-		name = "Hide Friends Chat members",
-		description = "Configures whether or not friends chat members are hidden"
-	)
-	default boolean hideFriendsChatMembers()
-	{
-		return false;
-	}
+            position = 4,
+            keyName = "hideClanMates", // is actually friends chat
+            name = "Hide Friends Chat members",
+            description = "Configures whether or not friends chat members are hidden"
+    )
+    default boolean hideFriendsChatMembers() {
+        return false;
+    }
 
-	@ConfigItem(
-		position = 5,
-		keyName = "hideIgnores",
-		name = "Hide Ignores",
-		description = "Configures whether or not ignored players are hidden"
-	)
-	default boolean hideIgnores()
-	{
-		return false;
-	}
+    @ConfigItem(
+            position = 5,
+            keyName = "hideClanChatMembers",
+            name = "Hide Clan Chat members",
+            description = "Configures whether or not clan chat members are hidden"
+    )
+    default boolean hideClanChatMembers() {
+        return false;
+    }
 
-	@ConfigItem(
-		position = 6,
-		keyName = "hideLocalPlayer",
-		name = "Hide Local Player",
-		description = "Configures whether or not the local player is hidden"
-	)
+    @ConfigItem(
+            position = 6,
+            keyName = "hideIgnores",
+            name = "Hide Ignores",
+            description = "Configures whether or not ignored players are hidden"
+    )
+    default boolean hideIgnores() {
+        return false;
+    }
+
+    @ConfigItem(
+            position = 7,
+            keyName = "hideLocalPlayer",
+            name = "Hide Local Player",
+            description = "Configures whether or not the local player is hidden"
+    )
 	default boolean hideLocalPlayer()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		position = 7,
-		keyName = "hideLocalPlayer2D",
-		name = "Hide Local Player 2D",
-		description = "Configures whether or not the local player's 2D elements are hidden"
-	)
+            position = 8,
+            keyName = "hideLocalPlayer2D",
+            name = "Hide Local Player 2D",
+            description = "Configures whether or not the local player's 2D elements are hidden"
+    )
 	default boolean hideLocalPlayer2D()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		position = 8,
-		keyName = "hideNPCs",
-		name = "Hide NPCs",
-		description = "Configures whether or not NPCs are hidden"
-	)
+            position = 9,
+            keyName = "hideNPCs",
+            name = "Hide NPCs",
+            description = "Configures whether or not NPCs are hidden"
+    )
 	default boolean hideNPCs()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		position = 9,
-		keyName = "hideNPCs2D",
-		name = "Hide NPCs 2D",
-		description = "Configures whether or not NPCs 2D elements are hidden"
-	)
+            position = 10,
+            keyName = "hideNPCs2D",
+            name = "Hide NPCs 2D",
+            description = "Configures whether or not NPCs 2D elements are hidden"
+    )
 	default boolean hideNPCs2D()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		position = 10,
-		keyName = "hidePets",
-		name = "Hide Pets",
-		description = "Configures whether or not other player pets are hidden"
-	)
+            position = 11,
+            keyName = "hidePets",
+            name = "Hide Pets",
+            description = "Configures whether or not other player pets are hidden"
+    )
 	default boolean hidePets()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		position = 11,
-		keyName = "hideAttackers",
-		name = "Hide Attackers",
-		description = "Configures whether or not NPCs/players attacking you are hidden"
-	)
+            position = 12,
+            keyName = "hideAttackers",
+            name = "Hide Attackers",
+            description = "Configures whether or not NPCs/players attacking you are hidden"
+    )
 	default boolean hideAttackers()
 	{
 		return false;
 	}
 
 	@ConfigItem(
-		position = 12,
-		keyName = "hideProjectiles",
-		name = "Hide Projectiles",
-		description = "Configures whether or not projectiles are hidden"
-	)
+            position = 13,
+            keyName = "hideProjectiles",
+            name = "Hide Projectiles",
+            description = "Configures whether or not projectiles are hidden"
+    )
 	default boolean hideProjectiles()
 	{
 		return false;

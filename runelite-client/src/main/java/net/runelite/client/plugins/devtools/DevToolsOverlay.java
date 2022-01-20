@@ -427,38 +427,30 @@ class DevToolsOverlay extends Overlay
 
 	private void renderProjectiles(Graphics2D graphics)
 	{
-		List<Projectile> projectiles = client.getProjectiles();
-
-		for (Projectile projectile : projectiles)
-		{
-			int projectileId = projectile.getId();
-			String text = "(ID: " + projectileId + ")";
-			int x = (int) projectile.getX();
-			int y = (int) projectile.getY();
-			LocalPoint projectilePoint = new LocalPoint(x, y);
-			Point textLocation = Perspective.getCanvasTextLocation(client, graphics, projectilePoint, text, 0);
-			if (textLocation != null)
-			{
-				OverlayUtil.renderTextLocation(graphics, textLocation, text, Color.RED);
+		for (Projectile projectile : client.getProjectiles()) {
+            int projectileId = projectile.getId();
+            String text = "(ID: " + projectileId + ")";
+            int x = (int) projectile.getX();
+            int y = (int) projectile.getY();
+            LocalPoint projectilePoint = new LocalPoint(x, y);
+            Point textLocation = Perspective.getCanvasTextLocation(client, graphics, projectilePoint, text, 0);
+            if (textLocation != null) {
+                OverlayUtil.renderTextLocation(graphics, textLocation, text, Color.RED);
 			}
 		}
 	}
 
 	private void renderGraphicsObjects(Graphics2D graphics)
 	{
-		List<GraphicsObject> graphicsObjects = client.getGraphicsObjects();
+        for (GraphicsObject graphicsObject : client.getGraphicsObjects()) {
+            LocalPoint lp = graphicsObject.getLocation();
+            Polygon poly = Perspective.getCanvasTilePoly(client, lp);
 
-		for (GraphicsObject graphicsObject : graphicsObjects)
-		{
-			LocalPoint lp = graphicsObject.getLocation();
-			Polygon poly = Perspective.getCanvasTilePoly(client, lp);
+            if (poly != null) {
+                OverlayUtil.renderPolygon(graphics, poly, Color.MAGENTA);
+            }
 
-			if (poly != null)
-			{
-				OverlayUtil.renderPolygon(graphics, poly, Color.MAGENTA);
-			}
-
-			String infoString = "(ID: " + graphicsObject.getId() + ")";
+            String infoString = "(ID: " + graphicsObject.getId() + ")";
 			Point textLocation = Perspective.getCanvasTextLocation(
 				client, graphics, lp, infoString, 0);
 			if (textLocation != null)

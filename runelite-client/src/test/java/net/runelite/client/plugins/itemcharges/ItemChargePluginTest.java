@@ -83,25 +83,29 @@ public class ItemChargePluginTest
 	private static final String CHRONICLE_ADD_MULTIPLE_CHARGES = "You add 5 charges to your book. It now has 5 charges.";
 	private static final String CHRONICLE_ADD_FULL = "Your book is fully charged! It has 1,000 charges already.";
 
-	private static final String CHECK_BRACELET_OF_SLAUGHTER = "Your bracelet of slaughter has 25 charges left.";
-	private static final String CHECK_BRACELET_OF_SLAUGHTER_1 = "Your bracelet of slaughter has 1 charge left.";
-	private static final String ACTIVATE_BRACELET_OF_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count from decreasing. It has 16 charges left.";
-	private static final String BREAK_BRACELET_OF_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count from decreasing. <col=ff0000>It then crumbles to dust.</col>";
+    private static final String CHECK_BRACELET_OF_SLAUGHTER = "Your bracelet of slaughter has 25 charges left.";
+    private static final String CHECK_BRACELET_OF_SLAUGHTER_1 = "Your bracelet of slaughter has 1 charge left.";
+    private static final String ACTIVATE_BRACELET_OF_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count from decreasing. It has 16 charges left.";
+    private static final String BREAK_BRACELET_OF_SLAUGHTER = "Your bracelet of slaughter prevents your slayer count from decreasing. <col=ff0000>It then crumbles to dust.</col>";
 
-	private static final String CHECK_EXPEDITIOUS_BRACELET = "Your expeditious bracelet has 6 charges left.";
-	private static final String CHECK_EXPEDITIOUS_BRACELET_1 = "Your expeditious bracelet has 1 charge left.";
-	private static final String ACTIVATE_EXPEDITIOUS_BRACELET = "Your expeditious bracelet helps you progress your slayer task faster. It has 11 charges left.";
-	private static final String BREAK_EXPEDITIOUS_BRACELET = "Your expeditious bracelet helps you progress your slayer task faster. <col=ff0000>It then crumbles to dust.</col>";
+    private static final String CHECK_EXPEDITIOUS_BRACELET = "Your expeditious bracelet has 6 charges left.";
+    private static final String CHECK_EXPEDITIOUS_BRACELET_1 = "Your expeditious bracelet has 1 charge left.";
+    private static final String ACTIVATE_EXPEDITIOUS_BRACELET = "Your expeditious bracelet helps you progress your slayer task faster. It has 11 charges left.";
+    private static final String BREAK_EXPEDITIOUS_BRACELET = "Your expeditious bracelet helps you progress your slayer task faster. <col=ff0000>It then crumbles to dust.</col>";
 
-	@Mock
-	@Bind
-	private Client client;
+    private static final String ACTIVATE_BLOOD_ESSENCE = "You activate the blood essence.";
+    private static final String EXTRACT_BLOOD_ESSENCE = "You manage to extract power from the Blood Essence and craft 67 extra runes.";
+    private static final String CHECK_BLOOD_ESSENCE = "Your blood essence has 56 charges remaining";
 
-	@Mock
-	@Bind
-	private OverlayManager overlayManager;
+    @Mock
+    @Bind
+    private Client client;
 
-	@Mock
+    @Mock
+    @Bind
+    private OverlayManager overlayManager;
+
+    @Mock
 	@Bind
 	private Notifier notifier;
 
@@ -411,14 +415,35 @@ public class ItemChargePluginTest
 	{
 		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.SPAM, "", ACTIVATE_EXPEDITIOUS_BRACELET, "", 0);
 		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, 11);
-	}
+        verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, 11);
+    }
 
-	@Test
-	public void testExpeditiousBreak()
-	{
-		ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_EXPEDITIOUS_BRACELET, "", 0);
-		itemChargePlugin.onChatMessage(chatMessage);
-		verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, 30);
-	}
+    @Test
+    public void testExpeditiousBreak() {
+        ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", BREAK_EXPEDITIOUS_BRACELET, "", 0);
+        itemChargePlugin.onChatMessage(chatMessage);
+        verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, 30);
+    }
+
+    @Test
+    public void testBloodEssenceActivate() {
+        ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", ACTIVATE_BLOOD_ESSENCE, "", 0);
+        itemChargePlugin.onChatMessage(chatMessage);
+        verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BLOOD_ESSENCE, 1000);
+    }
+
+    @Test
+    public void testBloodEssenceExtract() {
+        ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", EXTRACT_BLOOD_ESSENCE, "", 0);
+        when(configManager.getConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BLOOD_ESSENCE, Integer.class)).thenReturn(1000);
+        itemChargePlugin.onChatMessage(chatMessage);
+        verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BLOOD_ESSENCE, 933);
+    }
+
+    @Test
+    public void testBloodEssenceCheck() {
+        ChatMessage chatMessage = new ChatMessage(null, ChatMessageType.GAMEMESSAGE, "", CHECK_BLOOD_ESSENCE, "", 0);
+        itemChargePlugin.onChatMessage(chatMessage);
+        verify(configManager).setRSProfileConfiguration(ItemChargeConfig.GROUP, ItemChargeConfig.KEY_BLOOD_ESSENCE, 56);
+    }
 }

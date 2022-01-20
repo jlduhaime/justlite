@@ -27,6 +27,7 @@ package net.runelite.client.ui.overlay.components;
 import com.google.common.base.Strings;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -52,8 +53,9 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 	private Point preferredLocation = new Point();
 	private Dimension preferredSize = new Dimension(DEFAULT_SIZE, DEFAULT_SIZE);
 	private String text;
-	private Color color = Color.WHITE;
-	private boolean outline;
+    private Color color = Color.WHITE;
+    private Font font;
+    private boolean outline;
 	private Color backgroundColor = ComponentConstants.STANDARD_BACKGROUND_COLOR;
 	private BufferedImage image;
 	@Getter
@@ -67,7 +69,7 @@ public class InfoBoxComponent implements LayoutableRenderableEntity
 			return new Dimension();
 		}
 
-		graphics.setFont(getSize() < DEFAULT_SIZE ? FontManager.getRunescapeSmallFont() : FontManager.getRunescapeFont());
+        graphics.setFont(getSize() < DEFAULT_SIZE ? FontManager.getRunescapeSmallFont() : font);
 
 		final int baseX = preferredLocation.x;
 		final int baseY = preferredLocation.y;

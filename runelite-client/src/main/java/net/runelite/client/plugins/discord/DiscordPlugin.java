@@ -226,25 +226,24 @@ public class DiscordPlugin extends Plugin
 	@Subscribe
 	public void onDiscordUserInfo(final DiscordUserInfo event)
 	{
-		final PartyMember memberById = partyService.getMemberById(event.getMemberId());
+        final PartyMember memberById = partyService.getMemberById(event.getMemberId());
 
-		if (memberById == null || memberById.getAvatar() != null)
-		{
-			return;
-		}
+        if (memberById == null || memberById.getAvatar() != null) {
+            return;
+        }
 
-		CharMatcher matcher = CharMatcher.anyOf("abcdef0123456789");
-		if (!matcher.matchesAllOf(event.getUserId()) || !matcher.matchesAllOf(event.getAvatarId()))
-		{
-			// userid is actually a snowflake, but the matcher is sufficient
-			return;
-		}
+        final CharMatcher matcher = CharMatcher.anyOf("abcdef0123456789");
 
-		final String url;
+        // animated avatars contain a_ as prefix so we need to get rid of that first to check against matcher
+        if (!matcher.matchesAllOf(event.getUserId()) || !matcher.matchesAllOf(event.getAvatarId().replace("a_", ""))) {
+            // userid is actually a snowflake, but the matcher is sufficient
+            return;
+        }
 
-		if (Strings.isNullOrEmpty(event.getAvatarId()))
-		{
-			final String[] split = memberById.getName().split("#", 2);
+        final String url;
+
+        if (Strings.isNullOrEmpty(event.getAvatarId())) {
+            final String[] split = memberById.getName().split("#", 2);
 			if (split.length != 2)
 			{
 				return;

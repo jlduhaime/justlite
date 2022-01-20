@@ -24,10 +24,12 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Set;
+import java.util.List;
+
 import lombok.Getter;
 import static net.runelite.api.ItemID.*;
 import net.runelite.api.ObjectComposition;
@@ -58,17 +60,17 @@ public class MapClue extends ClueScroll implements ObjectClueScroll
 	public static final String WIZARDS_TOWER_DIS = "On the south side of the Wizard's Tower (DIS)";
 	public static final String SOUTH_OF_DRAYNOR_BANK = "South of Draynor Village Bank";
 
-	private static final Set<MapClue> CLUES = ImmutableSet.of(
-		new MapClue(CLUE_SCROLL_EASY_12179, new WorldPoint(3300, 3291, 0), "Al Kharid mine"),
-		new MapClue(CLUE_SCROLL_EASY_2713, new WorldPoint(3166, 3361, 0), CHAMPIONS_GUILD),
-		new MapClue(CLUE_SCROLL_EASY_2716, new WorldPoint(3290, 3374, 0), VARROCK_EAST_MINE),
-		new MapClue(CLUE_SCROLL_EASY_2719, new WorldPoint(3043, 3398, 0), STANDING_STONES),
-		new MapClue(CLUE_SCROLL_EASY_3516, new WorldPoint(2612, 3482, 0), "Brother Galahad's house, West of McGrubor's Wood."),
-		new MapClue(CLUE_SCROLL_EASY_3518, new WorldPoint(3110, 3152, 0), WIZARDS_TOWER_DIS),
-		new MapClue(CLUE_SCROLL_EASY_7236, new WorldPoint(2970, 3415, 0), "North of Falador."),
-		new MapClue(CLUE_SCROLL_MEDIUM_2827, new WorldPoint(3091, 3227, 0), SOUTH_OF_DRAYNOR_BANK),
-		new MapClue(CLUE_SCROLL_MEDIUM_3596, new WorldPoint(2907, 3295, 0), "West of the Crafting Guild"),
-		new MapClue(CLUE_SCROLL_MEDIUM_3598, new WorldPoint(2658, 3488, 0), CRATE_357, "The crate in McGrubor's Wood. Fairy ring ALS"),
+    private static final List<MapClue> CLUES = ImmutableList.of(
+            new MapClue(CLUE_SCROLL_EASY_12179, new WorldPoint(3300, 3291, 0), "Al Kharid mine"),
+            new MapClue(CLUE_SCROLL_EASY_2713, new WorldPoint(3166, 3361, 0), CHAMPIONS_GUILD),
+            new MapClue(CLUE_SCROLL_EASY_2716, new WorldPoint(3290, 3374, 0), VARROCK_EAST_MINE),
+            new MapClue(CLUE_SCROLL_EASY_2719, new WorldPoint(3043, 3398, 0), STANDING_STONES),
+            new MapClue(CLUE_SCROLL_EASY_3516, new WorldPoint(2612, 3482, 0), "Brother Galahad's house, West of McGrubor's Wood."),
+            new MapClue(CLUE_SCROLL_EASY_3518, new WorldPoint(3110, 3152, 0), WIZARDS_TOWER_DIS),
+            new MapClue(CLUE_SCROLL_EASY_7236, new WorldPoint(2970, 3415, 0), "North of Falador."),
+            new MapClue(CLUE_SCROLL_MEDIUM_2827, new WorldPoint(3091, 3227, 0), SOUTH_OF_DRAYNOR_BANK),
+            new MapClue(CLUE_SCROLL_MEDIUM_3596, new WorldPoint(2907, 3295, 0), "West of the Crafting Guild"),
+            new MapClue(CLUE_SCROLL_MEDIUM_3598, new WorldPoint(2658, 3488, 0), CRATE_357, "The crate in McGrubor's Wood. Fairy ring ALS"),
 		new MapClue(CLUE_SCROLL_MEDIUM_3599, new WorldPoint(2651, 3231, 0), "North of the Tower of Life. Fairy ring DJP"),
 		new MapClue(CLUE_SCROLL_MEDIUM_3601, new WorldPoint(2565, 3248, 0), CRATE_354, "The crate west of the Clocktower."),
 		new MapClue(CLUE_SCROLL_MEDIUM_3602, new WorldPoint(2924, 3210, 0), "Behind the Chemist's house in Rimmington."),

@@ -406,17 +406,20 @@ public class MenuEntrySwapperPlugin extends Plugin
 		swap("collect-item", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
 		swap("collect-items", "bank", () -> config.swapGEItemCollect() == GEItemCollectMode.BANK);
 
-		swap("tan 1", "tan all", config::swapTan);
+        swap("tan 1", "tan all", config::swapTan);
 
-		swapTeleport("varrock teleport", "grand exchange");
-		swapTeleport("camelot teleport", "seers'");
-		swapTeleport("watchtower teleport", "yanille");
-		swapTeleport("teleport to house", "outside");
+        swapTeleport("varrock teleport", "grand exchange");
+        swapTeleport("camelot teleport", "seers'");
+        swapTeleport("watchtower teleport", "yanille");
+        swapTeleport("teleport to house", "outside");
 
-		swap("eat", "guzzle", config::swapRockCake);
+        swap("eat", "guzzle", config::swapRockCake);
 
-		swap("travel", "dive", config::swapRowboatDive);
-	}
+        swap("travel", "dive", config::swapRowboatDive);
+
+        swap("climb", "climb-up", () -> (shiftModifier() ? config.swapStairsShiftClick() : config.swapStairsLeftClick()) == MenuEntrySwapperConfig.StairsMode.CLIMB_UP);
+        swap("climb", "climb-down", () -> (shiftModifier() ? config.swapStairsShiftClick() : config.swapStairsLeftClick()) == MenuEntrySwapperConfig.StairsMode.CLIMB_DOWN);
+    }
 
 	private void swap(String option, String swappedOption, Supplier<Boolean> enabled)
 	{
@@ -604,19 +607,21 @@ public class MenuEntrySwapperPlugin extends Plugin
 		final int widgetGroupId = WidgetInfo.TO_GROUP(menuEntryAdded.getActionParam1());
 
 		final boolean isDepositBoxPlayerInventory = widgetGroupId == WidgetID.DEPOSIT_BOX_GROUP_ID;
-		final boolean isChambersOfXericStorageUnitPlayerInventory = widgetGroupId == WidgetID.CHAMBERS_OF_XERIC_STORAGE_UNIT_INVENTORY_GROUP_ID;
+        final boolean isChambersOfXericStorageUnitPlayerInventory = widgetGroupId == WidgetID.CHAMBERS_OF_XERIC_STORAGE_UNIT_INVENTORY_GROUP_ID;
+        final boolean isGroupStoragePlayerInventory = widgetGroupId == WidgetID.GROUP_STORAGE_INVENTORY_GROUP_ID;
 		// Swap to shift-click deposit behavior
 		// Deposit- op 1 is the current withdraw amount 1/5/10/x for deposit box interface and chambers of xeric storage unit.
 		// Deposit- op 2 is the current withdraw amount 1/5/10/x for bank interface
 		if (shiftModifier() && config.bankDepositShiftClick() != ShiftDepositMode.OFF
-			&& menuEntryAdded.getType() == MenuAction.CC_OP.getId()
-			&& menuEntryAdded.getIdentifier() == (isDepositBoxPlayerInventory || isChambersOfXericStorageUnitPlayerInventory ? 1 : 2)
-			&& (menuEntryAdded.getOption().startsWith("Deposit-") || menuEntryAdded.getOption().startsWith("Store") || menuEntryAdded.getOption().startsWith("Donate")))
+                && menuEntryAdded.getType() == MenuAction.CC_OP.getId()
+                && menuEntryAdded.getIdentifier() == (isDepositBoxPlayerInventory || isGroupStoragePlayerInventory || isChambersOfXericStorageUnitPlayerInventory ? 1 : 2)
+                && (menuEntryAdded.getOption().startsWith("Deposit-") || menuEntryAdded.getOption().startsWith("Store") || menuEntryAdded.getOption().startsWith("Donate")))
 		{
 			ShiftDepositMode shiftDepositMode = config.bankDepositShiftClick();
 			final int opId = isDepositBoxPlayerInventory ? shiftDepositMode.getIdentifierDepositBox()
 				: isChambersOfXericStorageUnitPlayerInventory ? shiftDepositMode.getIdentifierChambersStorageUnit()
-				: shiftDepositMode.getIdentifier();
+                    : isGroupStoragePlayerInventory ? shiftDepositMode.getIdentifierGroupStorage()
+                    : shiftDepositMode.getIdentifier();
 			final MenuAction action = opId >= 6 ? MenuAction.CC_OP_LOW_PRIORITY : MenuAction.CC_OP;
 			bankModeSwap(action, opId);
 		}

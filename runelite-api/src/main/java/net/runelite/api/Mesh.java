@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Woox <https://github.com/wooxsolo>
+ * Copyright (c) 2022 Abex
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,59 +24,57 @@
  */
 package net.runelite.api;
 
-import net.runelite.api.coords.LocalPoint;
-
 /**
- * Represents a graphics object/spotanim.
+ * A {@link Model} or {@link ModelData}
  */
-public interface GraphicsObject extends Renderable
-{
+public interface Mesh<T extends Mesh<T>> {
+	int getVerticesCount();
+
+	int[] getVerticesX();
+
+	int[] getVerticesY();
+
+	int[] getVerticesZ();
+
+	int getFaceCount();
+
+	int[] getFaceIndices1();
+
+	int[] getFaceIndices2();
+
+	int[] getFaceIndices3();
+
+	byte[] getFaceTransparencies();
+
+	short[] getFaceTextures();
+
 	/**
-	 * The graphics object ID.
-	 *
-	 * @return the ID
+	 * Rotates this model 90 degrees around the vertical axis.
+	 * {@link ModelData#cloneVertices()} should be called before calling this method
 	 */
-	int getId();
+	T rotateY90Ccw();
 
 	/**
-	 * The location of the object.
-	 *
-	 * @return the location
+	 * Rotates this model 180 degrees around the vertical axis.
+	 * {@link ModelData#cloneVertices()} should be called before calling this method
 	 */
-	LocalPoint getLocation();
+	T rotateY180Ccw();
 
 	/**
-	 * Get the time this spotanim starts
-	 *
-	 * @return
+	 * Rotates this model 270 degrees around the vertical axis.
+	 * {@link ModelData#cloneVertices()} should be called before calling this method
 	 */
-	int getStartCycle();
+	T rotateY270Ccw();
 
 	/**
-	 * The plane the spotanim is on.
-	 *
-	 * @return
+	 * Offsets this model by the passed amount (1/128ths of a tile).
+	 * {@link ModelData#cloneVertices()} should be called before calling this method
 	 */
-	int getLevel();
+	T translate(int x, int y, int z);
 
 	/**
-	 * Gets the height of the graphic.
-	 *
-     * @return the height
-     */
-    int getHeight();
-
-    /**
-     * Checks if this spotanim is done animating
-     *
-     * @return
-     */
-    boolean finished();
-
-    /**
-     * Set if this spotanim is done animating. If finished, the spotanim will despawn next frame.
-     *
-     * @param finished
-     */
-    void setFinished(boolean finished);
+	 * Resizes this model by the passed amount (1/128ths).
+	 * {@link ModelData#cloneVertices()} should be called before calling this method
+	 */
+	T scale(int x, int y, int z);
 }

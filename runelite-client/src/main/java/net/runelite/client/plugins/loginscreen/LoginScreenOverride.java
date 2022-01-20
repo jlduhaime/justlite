@@ -34,26 +34,26 @@ public enum LoginScreenOverride
 	CHRISTMAS("christmas.jpg"),
 	CHAMBERS_OF_XERIC("cox.jpg"),
 	DARKMEYER("darkmeyer.jpg"),
-	DRAGON_SLAYER_2("ds2.jpg"),
-	FOSSIL_ISLAND("fossil_island.jpg"),
-	HALLOWEEN("halloween.jpg"),
-	HALLOWEEN_2019("halloween_2019.jpg"),
-	INFERNO("inferno.jpg"),
-	KEBOS("kebos.jpg"),
-	MONKEY_MADNESS_2("mm2.jpg"),
-	PRIFDDINAS("prifddinas.jpg"),
-	THEATRE_OF_BLOOD("tob.jpg"),
-	A_KINGDOM_DIVIDED("akd.jpg"),
-	CUSTOM,
-	RANDOM;
+    DRAGON_SLAYER_2("ds2.jpg"),
+    FOSSIL_ISLAND("fossil_island.jpg"),
+    HALLOWEEN("halloween.jpg"),
+    HALLOWEEN_2019("halloween_2019.jpg"),
+    INFERNO("inferno.jpg"),
+    KEBOS("kebos.jpg"),
+    MONKEY_MADNESS_2("mm2.jpg"),
+    PRIFDDINAS("prifddinas.jpg"),
+    THEATRE_OF_BLOOD("tob.jpg"),
+    A_KINGDOM_DIVIDED("akd.jpg"),
+    NEX("nex.jpg"),
+    CUSTOM,
+    RANDOM;
 
-	@Getter
-	private final String fileName;
+    @Getter
+    private final String fileName;
 
-	LoginScreenOverride()
-	{
-		this.fileName = null;
-	}
+    LoginScreenOverride() {
+        this.fileName = null;
+    }
 
 	LoginScreenOverride(String fileName)
 	{

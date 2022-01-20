@@ -31,23 +31,28 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.inject.Inject;
+
 import lombok.Getter;
 import net.runelite.api.AnimationID;
 import net.runelite.api.ChatMessageType;
 import net.runelite.api.Client;
 import net.runelite.api.GameObject;
 import net.runelite.api.GameState;
+
+import static net.runelite.api.GraphicID.CANNONBALL;
+import static net.runelite.api.GraphicID.GRANITE_CANNONBALL;
+
 import net.runelite.api.InventoryID;
 import net.runelite.api.Item;
 import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.ObjectID;
+
 import static net.runelite.api.ObjectID.CANNON_BASE;
+
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
-import static net.runelite.api.ProjectileID.CANNONBALL;
-import static net.runelite.api.ProjectileID.GRANITE_CANNONBALL;
 import net.runelite.api.coords.LocalPoint;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.ChatMessage;

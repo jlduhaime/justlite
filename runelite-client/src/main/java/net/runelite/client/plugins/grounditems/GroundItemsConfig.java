@@ -121,26 +121,34 @@ public interface GroundItemsConfig extends Config
 		return true;
 	}
 
-	@ConfigItem(
-		keyName = "recolorMenuHiddenItems",
-		name = "Recolor Menu Hidden Items",
-		description = "Configures whether or not hidden items in right-click menu will be recolored",
-		position = 5
-	)
-	default boolean recolorMenuHiddenItems()
-	{
-		return false;
-	}
-	
-	@ConfigItem(
-		keyName = "highlightTiles",
-		name = "Highlight Tiles",
-		description = "Configures whether or not to highlight tiles containing ground items",
-		position = 6
-	)
-	default boolean highlightTiles()
-	{
-		return false;
+    @ConfigItem(
+            keyName = "recolorMenuHiddenItems",
+            name = "Recolor Menu Hidden Items",
+            description = "Configures whether or not hidden items in right-click menu will be recolored",
+            position = 5
+    )
+    default boolean recolorMenuHiddenItems() {
+        return false;
+    }
+
+    @ConfigItem(
+            keyName = "deprioritizeHiddenItems",
+            name = "Deprioritize Menu Hidden Items",
+            description = "Depriotizies the menu options for items which are hidden, requiring a right click to pick up.",
+            position = 5
+    )
+    default boolean deprioritizeHiddenItems() {
+        return false;
+    }
+
+    @ConfigItem(
+            keyName = "highlightTiles",
+            name = "Highlight Tiles",
+            description = "Configures whether or not to highlight tiles containing ground items",
+            position = 6
+    )
+    default boolean highlightTiles() {
+        return false;
 	}
 
 	@ConfigItem(
@@ -415,14 +423,23 @@ public interface GroundItemsConfig extends Config
 		return false;
 	}
 
-	@ConfigItem(
-		keyName = "showLootbeamTier",
-		name = "Lootbeam tier",
-		description = "Configures which price tiers will trigger a lootbeam",
-		position = 31
-	)
-	default HighlightTier showLootbeamTier()
-	{
-		return HighlightTier.HIGH;
-	}
+    @ConfigItem(
+            keyName = "showLootbeamTier",
+            name = "Lootbeam tier",
+            description = "Configures which price tiers will trigger a lootbeam",
+            position = 31
+    )
+    default HighlightTier showLootbeamTier() {
+        return HighlightTier.HIGH;
+    }
+
+    @ConfigItem(
+            keyName = "lootbeamStyle",
+            name = "Lootbeam Style",
+            description = "Style of lootbeam to use",
+            position = 32
+    )
+    default Lootbeam.Style lootbeamStyle() {
+        return Lootbeam.Style.MODERN;
+    }
 }

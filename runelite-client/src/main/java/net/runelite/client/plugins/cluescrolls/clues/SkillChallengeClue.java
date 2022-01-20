@@ -24,12 +24,12 @@
  */
 package net.runelite.client.plugins.cluescrolls.clues;
 
-import com.google.common.collect.ImmutableSet;
+import com.google.common.collect.ImmutableList;
+
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -129,17 +129,17 @@ public class SkillChallengeClue extends ClueScroll implements NpcClueScroll, Nam
 		item(ItemID.IMCANDO_HAMMER)
 	);
 
-	private static final Set<SkillChallengeClue> CLUES = ImmutableSet.of(
-		// Charlie Tasks
-		new SkillChallengeClue("Cook a Pike", "i need to cook charlie a pike.", "i need to take the cooked pike to charlie.", item(ItemID.PIKE), item(ItemID.RAW_PIKE)),
-		new SkillChallengeClue("Cook a Trout", "i need to cook charlie a trout.", "i need to take the cooked trout to charlie.", item(ItemID.TROUT), item(ItemID.RAW_TROUT)),
-		new SkillChallengeClue("Craft a Leather Body", "i need to craft charlie a leather body.", "i need to take the leather body i crafted to charlie.", item(ItemID.LEATHER_BODY), item(ItemID.LEATHER), item(ItemID.NEEDLE), item(ItemID.THREAD)),
-		new SkillChallengeClue("Craft some Leather Chaps", "i need to craft charlie some leather chaps.", "i need to take the leather chaps i crafted to charlie.", item(ItemID.LEATHER_CHAPS), item(ItemID.LEATHER), item(ItemID.NEEDLE), item(ItemID.THREAD)),
-		new SkillChallengeClue("Fish a Herring", "i need to fish charlie a herring.", "i need to take a raw herring to charlie.", item(ItemID.RAW_HERRING), any("Fishing rod", item(ItemID.FISHING_ROD), item(ItemID.PEARL_FISHING_ROD)), item(ItemID.FISHING_BAIT)),
-		new SkillChallengeClue("Fish a Trout", "i need to fish charlie a trout.", "i need to take a raw trout to charlie.", item(ItemID.RAW_TROUT), any("Fly fishing rod", item(ItemID.FLY_FISHING_ROD), item(ItemID.PEARL_FLY_FISHING_ROD)), item(ItemID.FEATHER)),
-		new SkillChallengeClue("Mine a piece of Iron Ore", "i need to mine charlie a piece of iron ore from an iron vein.", "i need to take the iron ore to charlie.", item(ItemID.IRON_ORE), ANY_PICKAXE),
-		new SkillChallengeClue("Smith an Iron Dagger", "i need to smith charlie one iron dagger.", "i need to take the iron dagger i smithed to charlie.", item(ItemID.IRON_DAGGER), item(ItemID.IRON_BAR), ANY_HAMMER),
-		// Elite Sherlock Tasks
+    private static final List<SkillChallengeClue> CLUES = ImmutableList.of(
+            // Charlie Tasks
+            new SkillChallengeClue("Cook a Pike", "i need to cook charlie a pike.", "i need to take the cooked pike to charlie.", item(ItemID.PIKE), item(ItemID.RAW_PIKE)),
+            new SkillChallengeClue("Cook a Trout", "i need to cook charlie a trout.", "i need to take the cooked trout to charlie.", item(ItemID.TROUT), item(ItemID.RAW_TROUT)),
+            new SkillChallengeClue("Craft a Leather Body", "i need to craft charlie a leather body.", "i need to take the leather body i crafted to charlie.", item(ItemID.LEATHER_BODY), item(ItemID.LEATHER), item(ItemID.NEEDLE), item(ItemID.THREAD)),
+            new SkillChallengeClue("Craft some Leather Chaps", "i need to craft charlie some leather chaps.", "i need to take the leather chaps i crafted to charlie.", item(ItemID.LEATHER_CHAPS), item(ItemID.LEATHER), item(ItemID.NEEDLE), item(ItemID.THREAD)),
+            new SkillChallengeClue("Fish a Herring", "i need to fish charlie a herring.", "i need to take a raw herring to charlie.", item(ItemID.RAW_HERRING), any("Fishing rod", item(ItemID.FISHING_ROD), item(ItemID.PEARL_FISHING_ROD)), item(ItemID.FISHING_BAIT)),
+            new SkillChallengeClue("Fish a Trout", "i need to fish charlie a trout.", "i need to take a raw trout to charlie.", item(ItemID.RAW_TROUT), any("Fly fishing rod", item(ItemID.FLY_FISHING_ROD), item(ItemID.PEARL_FLY_FISHING_ROD)), item(ItemID.FEATHER)),
+            new SkillChallengeClue("Mine a piece of Iron Ore", "i need to mine charlie a piece of iron ore from an iron vein.", "i need to take the iron ore to charlie.", item(ItemID.IRON_ORE), ANY_PICKAXE),
+            new SkillChallengeClue("Smith an Iron Dagger", "i need to smith charlie one iron dagger.", "i need to take the iron dagger i smithed to charlie.", item(ItemID.IRON_DAGGER), item(ItemID.IRON_BAR), ANY_HAMMER),
+            // Elite Sherlock Tasks
 		new SkillChallengeClue("Equip a Dragon Scimitar.", true, any("Any Dragon Scimitar", item(ItemID.DRAGON_SCIMITAR), item(ItemID.DRAGON_SCIMITAR_OR))),
 		new SkillChallengeClue("Enchant some Dragonstone Jewellery.", "enchant a piece of dragonstone jewellery.",
 			xOfItem(ItemID.COSMIC_RUNE, 1),

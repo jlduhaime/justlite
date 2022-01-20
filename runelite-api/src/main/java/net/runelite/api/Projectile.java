@@ -24,28 +24,44 @@
  */
 package net.runelite.api;
 
+import net.runelite.api.coords.LocalPoint;
+
 /**
  * Represents a projectile entity. (ie. cannonball, arrow)
  */
-public interface Projectile extends Renderable
-{
-	/**
-	 * Gets the ID of the projectile.
-	 *
-	 * @return the projectile ID
-	 * @see ProjectileID
-	 */
-	int getId();
+public interface Projectile extends Renderable {
+    /**
+     * Gets the ID of the projectile.
+     *
+     * @return the projectile ID
+     * @see GraphicID
+     */
+    int getId();
 
-	/**
-	 * Gets the original x-axis coordinate that this projectile started from.
-	 *
-	 * @return the original coordinate
-	 */
-	int getX1();
+    /**
+     * Gets the actor that is targeted by this projectile.
+     *
+     * @return the target actor, or null if this projectile is an AoE attack
+     */
+    Actor getInteracting();
 
-	/**
-	 * Gets the original y-axis coordinate that this projectile started from.
+    /**
+     * Get the target point of the projectile. For projectiles with an actor target,
+     * this is updated each frame to the actor position.
+     *
+     * @return
+     */
+    LocalPoint getTarget();
+
+    /**
+     * Gets the original x-axis coordinate that this projectile started from.
+     *
+     * @return the original coordinate
+     */
+    int getX1();
+
+    /**
+     * Gets the original y-axis coordinate that this projectile started from.
 	 *
 	 * @return the original coordinate
 	 */
@@ -69,28 +85,38 @@ public interface Projectile extends Renderable
 	 * Gets the ending height of the projectile.
 	 *
 	 * @return the ending height
-	 */
-	int getEndHeight();
+     */
+    int getEndHeight();
 
-	/**
-	 * Gets the game cycle that the projectile begun movement at.
-	 *
-	 * @return the start game cycle
-	 */
-	int getStartMovementCycle();
+    /**
+     * Gets the game cycle that the projectile begun movement at.
+     *
+     * @return the start game cycle
+     */
+    int getStartCycle();
 
-	/**
-	 * Gets the game cycle that the projectile will reach its target at.
-	 *
-	 * @return the end game cycle
-	 */
-	int getEndCycle();
+    /**
+     * Gets the game cycle that the projectile will reach its target at.
+     *
+     * @return the end game cycle
+     */
+    int getEndCycle();
 
-	/**
-	 * Gets the remaining game cycles until the projectile reaches its
-	 * target and despawns.
-	 *
-	 * @return the remaining game cycles
+    /**
+     * Sets the game cycle the projectile will reach its target at. The
+     * projectile automatically despawns after this time, and setting the
+     * end cycle to a time in the past is an effective way of removing the
+     * projectile.
+     *
+     * @param cycle
+     */
+    void setEndCycle(int cycle);
+
+    /**
+     * Gets the remaining game cycles until the projectile reaches its
+     * target and despawns.
+     *
+     * @return the remaining game cycles
 	 */
 	int getRemainingCycles();
 

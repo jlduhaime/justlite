@@ -416,25 +416,30 @@ public interface Client extends GameEngine {
 	 */
 	IndexDataBase getIndexSprites();
 
-	/**
-	 * Gets the script index.
-	 */
-	IndexDataBase getIndexScripts();
+    /**
+     * Gets the script index.
+     */
+    IndexDataBase getIndexScripts();
 
-	/**
-	 * Gets the config index.
-	 */
-	IndexDataBase getIndexConfig();
+    /**
+     * Gets the config index.
+     */
+    IndexDataBase getIndexConfig();
 
-	/**
-	 * Returns the x-axis base coordinate.
-	 * <p>
-	 * This value is the x-axis world coordinate of tile (0, 0) in
-	 * the current scene (ie. the bottom-left most coordinates in the scene).
-	 *
-	 * @return the base x-axis coordinate
-	 */
-	int getBaseX();
+    /**
+     * Gets an index by id
+     */
+    IndexDataBase getIndex(int id);
+
+    /**
+     * Returns the x-axis base coordinate.
+     * <p>
+     * This value is the x-axis world coordinate of tile (0, 0) in
+     * the current scene (ie. the bottom-left most coordinates in the scene).
+     *
+     * @return the base x-axis coordinate
+     */
+    int getBaseX();
 
 	/**
 	 * Returns the y-axis base coordinate.
@@ -1028,48 +1033,88 @@ public interface Client extends GameEngine {
 	 * @param pixels the pixels
 	 * @param width the width
 	 * @param height the height
-	 * @return the sprite image
-	 */
-	SpritePixels createSpritePixels(int[] pixels, int width, int height);
+     * @return the sprite image
+     */
+    SpritePixels createSpritePixels(int[] pixels, int width, int height);
 
-	/**
-	 * Gets the location of the local player.
-	 *
-	 * @return the local player location
-	 */
-	@Nullable
-	LocalPoint getLocalDestinationLocation();
+    /**
+     * Gets the location of the local player.
+     *
+     * @return the local player location
+     */
+    @Nullable
+    LocalPoint getLocalDestinationLocation();
 
-	/**
-	 * Gets a list of all projectiles currently spawned.
-	 *
-	 * @return all projectiles
-	 */
-	List<Projectile> getProjectiles();
+    /**
+     * Create a projectile.
+     *
+     * @param id          projectile/spotanim id
+     * @param plane       plane the projectile is on
+     * @param startX      local x coordinate the projectile starts at
+     * @param startY      local y coordinate the projectile starts at
+     * @param startZ      local z coordinate the projectile starts at - includes tile height
+     * @param startCycle  cycle the project starts
+     * @param endCycle    cycle the projectile ends
+     * @param slope
+     * @param startHeight start height of projectile - excludes tile height
+     * @param endHeight   end height of projectile - excludes tile height
+     * @param target      optional actor target
+     * @param targetX     target x - if an actor target is supplied should be the target x
+     * @param targetY     taret y - if an actor target is supplied should be the target y
+     * @return the new projectile
+     */
+    Projectile createProjectile(int id, int plane, int startX, int startY, int startZ, int startCycle, int endCycle,
+                                int slope, int startHeight, int endHeight, @Nullable Actor target, int targetX, int targetY);
 
-	/**
-	 * Gets a list of all graphics objects currently drawn.
-	 *
-	 * @return all graphics objects
-	 */
-	List<GraphicsObject> getGraphicsObjects();
+    /**
+     * Gets a list of all projectiles currently spawned.
+     *
+     * @return all projectiles
+     */
+    Deque<Projectile> getProjectiles();
 
-	/**
-	 * Creates a RuneLiteObject, which is a modified {@link GraphicsObject}
-	 */
-	RuneLiteObject createRuneLiteObject();
+    /**
+     * Gets a list of all graphics objects currently drawn.
+     *
+     * @return all graphics objects
+     */
+    Deque<GraphicsObject> getGraphicsObjects();
 
-	/**
-	 * Loads a model from the cache
-	 *
-	 * @param id the ID of the model
-	 * @return the model or null if it is loading or nonexistent
-	 */
-	@Nullable
-	Model loadModel(int id);
+    /**
+     * Creates a RuneLiteObject, which is a modified {@link GraphicsObject}
+     */
+    RuneLiteObject createRuneLiteObject();
 
-	/**
-	 * Loads a model from the cache and also recolors it
+    /**
+     * Loads an unlit model from the cache. The returned model shares
+     * data such as faces, face colors, face transparencies, and vertex points with
+     * other models. If you want to mutate these you MUST call the relevant {@code cloneX}
+     * method.
+     *
+     * @param id the ID of the model
+     * @return the model or null if it is loading or nonexistent
+     * @see ModelData#cloneColors()
+     */
+    @Nullable
+    ModelData loadModelData(int id);
+
+    ModelData mergeModels(ModelData[] models, int length);
+
+    ModelData mergeModels(ModelData... models);
+
+    /**
+     * Loads and lights a model from the cache
+     * <p>
+     * This is equivalent to {@code loadModelData(id).light()}
+     *
+     * @param id the ID of the model
+     * @return the model or null if it is loading or nonexistent
+     */
+    @Nullable
+    Model loadModel(int id);
+
+    /**
+     * Loads a model from the cache and also recolors it
 	 *
 	 * @param id the ID of the model
 	 * @param colorToFind array of hsl color values to find in the model to replace
@@ -1570,25 +1615,32 @@ public interface Client extends GameEngine {
 
 	/**
 	 * Sets whether 2D sprites related to the other players are hidden.
-	 * (ie. overhead prayers, PK skull)
-	 *
-	 * @param state the new player 2D hidden state
-	 */
-	void setOthersHidden2D(boolean state);
+     * (ie. overhead prayers, PK skull)
+     *
+     * @param state the new player 2D hidden state
+     */
+    void setOthersHidden2D(boolean state);
 
-	/**
-	 * Sets whether or not friends are hidden.
-	 *
-	 * @param state the new friends hidden state
-	 */
-	void setFriendsHidden(boolean state);
+    /**
+     * Sets whether or not friends are hidden.
+     *
+     * @param state the new friends hidden state
+     */
+    void setFriendsHidden(boolean state);
 
-	/**
-	 * Sets whether or not friends chat members are hidden.
-	 *
-	 * @param state the new friends chat member hidden state
-	 */
-	void setFriendsChatMembersHidden(boolean state);
+    /**
+     * Sets whether or not friends chat members are hidden.
+     *
+     * @param state the new friends chat member hidden state
+     */
+    void setFriendsChatMembersHidden(boolean state);
+
+    /**
+     * Sets whether or not clan members are hidden.
+     *
+     * @param state the new clan chat member hidden state
+     */
+    void setClanChatMembersHidden(boolean state);
 
 	/**
 	 * Sets whether or not ignored players are hidden.
