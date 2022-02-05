@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2018, Jordan Atwood <jordan.atwood423@gmail.com>
+ * Copyright (c) 2018, Seth <https://github.com/sethtroll>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,47 +22,56 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.timers;
+package net.runelite.client.plugins.grounditems;
 
-import com.google.common.collect.ImmutableList;
-import java.util.Collection;
-import javax.annotation.Nullable;
-import net.runelite.api.widgets.WidgetInfo;
+import java.time.Duration;
+import java.time.Instant;
+import javax.inject.Inject;
+import net.runelite.client.util.HotkeyListener;
 
-enum TeleportWidget
+class GroundItemHotkeyListener extends HotkeyListener
 {
-	HOME_TELEPORT,
-	MINIGAME_TELEPORT,
-	TRAILBLAZER_AREA_TELEPORT,
-	;
+	private final GroundItemsPlugin plugin;
+	private final GroundItemsConfig config;
 
-	private static final Collection HOME_TELEPORT_IDS = ImmutableList.of(
-		WidgetInfo.SPELL_LUMBRIDGE_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_EDGEVILLE_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_LUNAR_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_ARCEUUS_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_KOUREND_HOME_TELEPORT.getId(),
-		WidgetInfo.SPELL_CATHERBY_HOME_TELEPORT.getId()
-	);
-	private static final Collection MINIGAME_TELEPORT_IDS = ImmutableList.of(
-		WidgetInfo.MINIGAME_TELEPORT_BUTTON.getId()
-	);
+	private Instant lastPress;
 
-	@Nullable
-	static TeleportWidget of(int widgetId)
+	@Inject
+	private GroundItemHotkeyListener(GroundItemsPlugin plugin, GroundItemsConfig config)
 	{
-		if (HOME_TELEPORT_IDS.contains(widgetId))
+		super(config::hotkey);
+
+		this.plugin = plugin;
+		this.config = config;
+	}
+
+	@Override
+	public void hotkeyPressed()
+	{
+		if (plugin.isHideAll())
 		{
-			return HOME_TELEPORT;
+			plugin.setHideAll(false);
+			plugin.setHotKeyPressed(true);
+			lastPress = null;
 		}
-		else if (MINIGAME_TELEPORT_IDS.contains(widgetId))
+		else if (lastPress != null && !plugin.isHotKeyPressed() && config.doubleTapDelay() > 0 && Duration.between(lastPress, Instant.now()).compareTo(Duration.ofMillis(config.doubleTapDelay())) < 0)
 		{
-			return MINIGAME_TELEPORT;
+			plugin.setHideAll(true);
+			lastPress = null;
 		}
-		else if (widgetId == WidgetInfo.TRAILBLAZER_AREA_TELEPORT.getId())
+		else
 		{
-			return TRAILBLAZER_AREA_TELEPORT;
+			plugin.setHotKeyPressed(true);
+			lastPress = Instant.now();
 		}
-		return null;
+	}
+
+	@Override
+	public void hotkeyReleased()
+	{
+		plugin.setHotKeyPressed(false);
+		plugin.setTextBoxBounds(null);
+		plugin.setHiddenBoxBounds(null);
+		plugin.setHighlightBoxBounds(null);
 	}
 }
