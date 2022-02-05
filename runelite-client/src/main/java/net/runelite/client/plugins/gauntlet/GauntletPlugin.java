@@ -24,6 +24,7 @@ import net.runelite.client.game.SkillIconManager;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 
+import static net.runelite.api.GraphicID.*;
 import static net.runelite.client.plugins.gauntlet.Hunllef.BossAttack.LIGHTNING;
 import static net.runelite.client.plugins.gauntlet.Hunllef.BossAttack.MAGIC;
 import static net.runelite.client.plugins.gauntlet.Hunllef.BossAttack.PRAYER;
@@ -47,11 +48,11 @@ public class GauntletPlugin extends Plugin {
     private static final Set<Integer> TORNADO_NPC_IDS = ImmutableSet.of(9025, 9039);
     private static final Set<Integer> MELEE_ANIMATIONS = ImmutableSet.of(395, 401, 400, 401, 386, 390, 422, 423, 401, 428, 440);
     private static final Set<Integer> PLAYER_ANIMATIONS = ImmutableSet.of(395, 401, 400, 401, 386, 390, 422, 423, 401, 428, 440, 426, 1167);
-    private static final Set<Integer> HUNLLEF_MAGE_PROJECTILES = ImmutableSet.of(ProjectileID.HUNLLEF_MAGE_ATTACK, ProjectileID.HUNLLEF_CORRUPTED_MAGE_ATTACK);
-    private static final Set<Integer> HUNLLEF_RANGE_PROJECTILES = ImmutableSet.of(ProjectileID.HUNLLEF_RANGE_ATTACK, ProjectileID.HUNLLEF_CORRUPTED_RANGE_ATTACK);
-    private static final Set<Integer> HUNLLEF_PRAYER_PROJECTILES = ImmutableSet.of(ProjectileID.HUNLLEF_PRAYER_ATTACK, ProjectileID.HUNLLEF_CORRUPTED_PRAYER_ATTACK);
-    private static final Set<Integer> HUNLLEF_PROJECTILES = ImmutableSet.of(ProjectileID.HUNLLEF_PRAYER_ATTACK, ProjectileID.HUNLLEF_CORRUPTED_PRAYER_ATTACK,
-            ProjectileID.HUNLLEF_RANGE_ATTACK, ProjectileID.HUNLLEF_CORRUPTED_RANGE_ATTACK, ProjectileID.HUNLLEF_MAGE_ATTACK, ProjectileID.HUNLLEF_CORRUPTED_MAGE_ATTACK
+    private static final Set<Integer> HUNLLEF_MAGE_PROJECTILES = ImmutableSet.of(HUNLLEF_MAGE_ATTACK, HUNLLEF_CORRUPTED_MAGE_ATTACK);
+    private static final Set<Integer> HUNLLEF_RANGE_PROJECTILES = ImmutableSet.of(HUNLLEF_RANGE_ATTACK, HUNLLEF_CORRUPTED_RANGE_ATTACK);
+    private static final Set<Integer> HUNLLEF_PRAYER_PROJECTILES = ImmutableSet.of(HUNLLEF_PRAYER_ATTACK, HUNLLEF_CORRUPTED_PRAYER_ATTACK);
+    private static final Set<Integer> HUNLLEF_PROJECTILES = ImmutableSet.of(HUNLLEF_PRAYER_ATTACK, HUNLLEF_CORRUPTED_PRAYER_ATTACK,
+            HUNLLEF_RANGE_ATTACK, HUNLLEF_CORRUPTED_RANGE_ATTACK, HUNLLEF_MAGE_ATTACK, HUNLLEF_CORRUPTED_MAGE_ATTACK
     );
     private static final Set<Integer> HUNLLEF_NPC_IDS = ImmutableSet.of(NpcID.CRYSTALLINE_HUNLLEF, NpcID.CRYSTALLINE_HUNLLEF_9022, NpcID.CRYSTALLINE_HUNLLEF_9023,
             NpcID.CRYSTALLINE_HUNLLEF_9024, NpcID.CORRUPTED_HUNLLEF, NpcID.CORRUPTED_HUNLLEF_9036, NpcID.CORRUPTED_HUNLLEF_9037, NpcID.CORRUPTED_HUNLLEF_9038

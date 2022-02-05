@@ -15,7 +15,6 @@ import net.runelite.api.NPCComposition;
 import net.runelite.api.NpcID;
 import net.runelite.api.Player;
 import net.runelite.api.Projectile;
-import net.runelite.api.ProjectileID;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.api.events.AnimationChanged;
@@ -45,6 +44,8 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static net.runelite.api.GraphicID.*;
 
 @PluginDescriptor(
         name = "Olm Helper",
@@ -207,15 +208,15 @@ public class OlmHelperPlugin extends Plugin {
 
         final Projectile projectile = event.getProjectile();
         switch (projectile.getId()) {
-            case ProjectileID.OLM_MAGE_ATTACK:
+            case OLM_MAGE_ATTACK:
                 prayAgainstOlm = PrayAgainst.MAGIC;
                 lastPrayTime = System.currentTimeMillis();
                 break;
-            case ProjectileID.OLM_RANGE_ATTACK:
+            case OLM_RANGE_ATTACK:
                 prayAgainstOlm = PrayAgainst.RANGED;
                 lastPrayTime = System.currentTimeMillis();
                 break;
-            case ProjectileID.OLM_ACID_TRAIL:
+            case OLM_ACID_TRAIL:
                 acidTarget = (Player) projectile.getNext();
                 break;
         }
@@ -228,7 +229,7 @@ public class OlmHelperPlugin extends Plugin {
 
         final Player player = (Player) event.getActor();
 
-        if (player.getAnimation() == GraphicID.OLM_BURN) {
+        if (player.getAnimation() == OLM_BURN) {
             int add = 0;
             for (Victim victim : victims) {
                 if (victim.getPlayer().getNext().equals(player.getName()))

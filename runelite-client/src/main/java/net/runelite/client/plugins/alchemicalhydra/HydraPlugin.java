@@ -146,7 +146,7 @@ public class HydraPlugin extends Plugin
     @Subscribe
     private void onProjectileMoved(ProjectileMoved event) {
         if (!inHydraInstance || hydra == null
-                || client.getGameCycle() >= event.getProjectile().getStartMovementCycle())
+                || client.getGameCycle() >= event.getProjectile().getStartCycle())
         {
             return;
         }
@@ -264,6 +264,11 @@ public class HydraPlugin extends Plugin
                 // if it's a spec, increment the spec timer
                 if (npcs.getAnimation() == phase.getSpecAnimationId() && phase.getSpecAnimationId() != 0)
                     hydra.setNextSpecial(hydra.getNextSpecial() + 9);
+
+                // handle flame and lightning specs since animations don't happen for them anymore
+                if (hydra.getNextSpecial() - hydra.getAttackCount() < 0) {
+                    hydra.setNextSpecial((hydra.getNextSpecial() + 9));
+                }
 
                 // check to see if phase is changing
                 if (hydra.getPhase().getNpcId() == npcs.getId())

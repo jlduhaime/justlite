@@ -6,9 +6,9 @@ import java.awt.image.BufferedImage;
 import lombok.AccessLevel;
 import lombok.Getter;
 import net.runelite.api.Projectile;
-import net.runelite.api.ProjectileID;
 import net.runelite.api.Skill;
 import net.runelite.client.game.SkillIconManager;
+import static net.runelite.api.GraphicID.*;
 
 @Getter(AccessLevel.PACKAGE)
 class Missiles {
@@ -26,14 +26,14 @@ class Missiles {
 
     private Color assignedColor(int id) {
         switch (id) {
-            case ProjectileID.HUNLLEF_MAGE_ATTACK:
-            case ProjectileID.HUNLLEF_CORRUPTED_MAGE_ATTACK:
+            case HUNLLEF_MAGE_ATTACK:
+            case HUNLLEF_CORRUPTED_MAGE_ATTACK:
                 return Color.CYAN;
-            case ProjectileID.HUNLLEF_RANGE_ATTACK:
-            case ProjectileID.HUNLLEF_CORRUPTED_RANGE_ATTACK:
+            case HUNLLEF_RANGE_ATTACK:
+            case HUNLLEF_CORRUPTED_RANGE_ATTACK:
                 return Color.GREEN;
-            case ProjectileID.HUNLLEF_PRAYER_ATTACK:
-            case ProjectileID.HUNLLEF_CORRUPTED_PRAYER_ATTACK:
+            case HUNLLEF_PRAYER_ATTACK:
+            case HUNLLEF_CORRUPTED_PRAYER_ATTACK:
                 return Color.MAGENTA;
             default:
                 return null;
@@ -42,14 +42,14 @@ class Missiles {
 
     private BufferedImage assignedImage(SkillIconManager SkillIconManager, int id) {
         switch (id) {
-            case ProjectileID.HUNLLEF_MAGE_ATTACK:
-            case ProjectileID.HUNLLEF_CORRUPTED_MAGE_ATTACK:
+            case HUNLLEF_MAGE_ATTACK:
+            case HUNLLEF_CORRUPTED_MAGE_ATTACK:
                 return SkillIconManager.getSkillImage(Skill.MAGIC);
-            case ProjectileID.HUNLLEF_RANGE_ATTACK:
-            case ProjectileID.HUNLLEF_CORRUPTED_RANGE_ATTACK:
+            case HUNLLEF_RANGE_ATTACK:
+            case HUNLLEF_CORRUPTED_RANGE_ATTACK:
                 return SkillIconManager.getSkillImage(Skill.RANGED);
-            case ProjectileID.HUNLLEF_PRAYER_ATTACK:
-            case ProjectileID.HUNLLEF_CORRUPTED_PRAYER_ATTACK:
+            case HUNLLEF_PRAYER_ATTACK:
+            case HUNLLEF_CORRUPTED_PRAYER_ATTACK:
                 return SkillIconManager.getSkillImage(Skill.PRAYER);
             default:
                 return null;

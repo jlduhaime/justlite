@@ -403,7 +403,7 @@ public class DemonicGorillasPlugin extends Plugin {
             return;
         }
 
-        if (client.getGameCycle() >= projectile.getStartMovementCycle())
+        if (client.getGameCycle() >= projectile.getStartCycle())
             return;
 
         if (projectileId == DEMONIC_GORILLA_BOULDER)

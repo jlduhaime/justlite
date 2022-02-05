@@ -28,7 +28,7 @@ public class Victim {
     enum Type {
         BURN(41),
         ACID(23),
-        TELEPORT(20);
+        TELEPORT(10);
 
         private int ticks;
     }

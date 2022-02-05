@@ -26,6 +26,8 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 
+import static net.runelite.api.GraphicID.OLM_LIGHTNING;
+
 @PluginDescriptor(
         name = "AoE Warnings",
         description = "Shows the final destination for AoE Attack projectiles",
@@ -269,7 +271,7 @@ public class AoeWarningPlugin extends Plugin {
         if (this.configLightningTrail) {
             client.getGraphicsObjects().forEach(o ->
             {
-                if (o.getId() == GraphicID.OLM_LIGHTNING) {
+                if (o.getId() == OLM_LIGHTNING) {
                     lightningTrail.add(WorldPoint.fromLocal(client, o.getLocation()));
 
                     if (this.aoeNotifyAll || this.configLightningTrailNotifyEnabled) {
@@ -290,14 +292,14 @@ public class AoeWarningPlugin extends Plugin {
         }
 
         switch (projectileInfo) {
-            case VASA_RANGED_AOE:
-            case VORKATH_POISON_POOL:
-            case VORKATH_SPAWN:
-            case VORKATH_TICK_FIRE:
-            case OLM_BURNING:
-            case OLM_FALLING_CRYSTAL_TRAIL:
-            case OLM_ACID_TRAIL:
-            case OLM_FIRE_LINE:
+            case VASA_RANGED_AOE_PROJ:
+            case VORKATH_POISON_POOL_PROJ:
+            case VORKATH_SPAWN_PROJ:
+            case VORKATH_TICK_FIRE_PROJ:
+            case OLM_BURNING_PROJ:
+            case OLM_FALLING_CRYSTAL_TRAIL_PROJ:
+            case OLM_ACID_TRAIL_PROJ:
+            case OLM_FIRE_LINE_PROJ:
                 return false;
         }
 
@@ -315,51 +317,51 @@ public class AoeWarningPlugin extends Plugin {
         }
 
         switch (projectileInfo) {
-            case LIZARDMAN_SHAMAN_AOE:
+            case LIZARDMAN_SHAMAN_AOE_PROJ:
                 return notify ? this.configShamansNotifyEnabled : this.configShamansEnabled;
-            case CRAZY_ARCHAEOLOGIST_AOE:
+            case CRAZY_ARCHAEOLOGIST_AOE_PROJ:
                 return notify ? this.configArchaeologistNotifyEnabled : this.configArchaeologistEnabled;
-            case ICE_DEMON_RANGED_AOE:
-            case ICE_DEMON_ICE_BARRAGE_AOE:
+            case ICE_DEMON_RANGED_AOE_PROJ:
+            case ICE_DEMON_ICE_BARRAGE_AOE_PROJ:
                 return notify ? this.configIceDemonNotifyEnabled : this.configIceDemonEnabled;
-            case VASA_AWAKEN_AOE:
-            case VASA_RANGED_AOE:
+            case VASA_AWAKEN_AOE_PROJ:
+            case VASA_RANGED_AOE_PROJ:
                 return notify ? this.configVasaNotifyEnabled : this.configVasaEnabled;
-            case TEKTON_METEOR_AOE:
+            case TEKTON_METEOR_AOE_PROJ:
                 return notify ? this.configTektonNotifyEnabled : this.configTektonEnabled;
-            case VORKATH_BOMB:
-            case VORKATH_POISON_POOL:
-            case VORKATH_SPAWN:
-            case VORKATH_TICK_FIRE:
+            case VORKATH_BOMB_PROJ:
+            case VORKATH_POISON_POOL_PROJ:
+            case VORKATH_SPAWN_PROJ:
+            case VORKATH_TICK_FIRE_PROJ:
                 return notify ? this.configVorkathNotifyEnabled : this.configVorkathEnabled;
-            case VETION_LIGHTNING:
+            case VETION_LIGHTNING_PROJ:
                 return notify ? this.configVetionNotifyEnabled : this.configVetionEnabled;
-            case CHAOS_FANATIC:
+            case CHAOS_FANATIC_PROJ:
                 return notify ? this.configChaosFanaticNotifyEnabled : this.configChaosFanaticEnabled;
-            case GALVEK_BOMB:
-            case GALVEK_MINE:
+            case GALVEK_BOMB_PROJ:
+            case GALVEK_MINE_PROJ:
                 return notify ? this.configGalvekNotifyEnabled : this.configGalvekEnabled;
-            case DAWN_FREEZE:
-            case DUSK_CEILING:
+            case DAWN_FREEZE_PROJ:
+            case DUSK_CEILING_PROJ:
                 return notify ? this.configGargBossNotifyEnabled : this.configGargBossEnabled;
-            case OLM_FALLING_CRYSTAL:
-            case OLM_BURNING:
-            case OLM_FALLING_CRYSTAL_TRAIL:
-            case OLM_ACID_TRAIL:
-            case OLM_FIRE_LINE:
+            case OLM_FALLING_CRYSTAL_PROJ:
+            case OLM_BURNING_PROJ:
+            case OLM_FALLING_CRYSTAL_TRAIL_PROJ:
+            case OLM_ACID_TRAIL_PROJ:
+            case OLM_FIRE_LINE_PROJ:
                 return notify ? this.configOlmNotifyEnabled : this.configOlmEnabled;
-            case CORPOREAL_BEAST:
-            case CORPOREAL_BEAST_DARK_CORE:
+            case CORPOREAL_BEAST_PROJ:
+            case CORPOREAL_BEAST_DARK_CORE_PROJ:
                 return notify ? this.configCorpNotifyEnabled : this.configCorpEnabled;
-            case XARPUS_POISON_AOE:
+            case XARPUS_POISON_AOE_PROJ:
                 return notify ? this.configXarpusNotifyEnabled : this.configXarpusEnabled;
-            case ADDY_DRAG_POISON:
+            case ADDY_DRAG_POISON_PROJ:
                 return notify ? this.configaddyDragsNotifyEnabled : this.configaddyDrags;
-            case DRAKE_BREATH:
+            case DRAKE_BREATH_PROJ:
                 return notify ? this.configDrakeNotifyEnabled : this.configDrakeEnabled;
-            case CERB_FIRE:
+            case CERB_FIRE_PROJ:
                 return notify ? this.configCerbFireNotifyEnabled : this.configCerbFireEnabled;
-            case DEMONIC_GORILLA_BOULDER:
+            case DEMONIC_GORILLA_BOULDER_PROJ:
                 return notify ? this.configDemonicGorillaNotifyEnabled : this.configDemonicGorillaEnabled;
         }
 

@@ -8,10 +8,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import net.runelite.api.NPC;
 import net.runelite.api.Prayer;
-import net.runelite.api.ProjectileID;
 import net.runelite.api.SpriteID;
 import net.runelite.client.game.SpriteManager;
 import net.runelite.client.util.ImageUtil;
+
+import static net.runelite.api.GraphicID.HYDRA_MAGIC;
+import static net.runelite.api.GraphicID.HYDRA_RANGED;
 
 @Getter(AccessLevel.PACKAGE)
 @RequiredArgsConstructor
@@ -22,8 +24,8 @@ class Hydra
     @RequiredArgsConstructor
     enum AttackStyle
     {
-        MAGIC(ProjectileID.HYDRA_MAGIC, Prayer.PROTECT_FROM_MAGIC, SpriteID.PRAYER_PROTECT_FROM_MAGIC),
-        RANGED(ProjectileID.HYDRA_RANGED, Prayer.PROTECT_FROM_MISSILES, SpriteID.PRAYER_PROTECT_FROM_MISSILES);
+        MAGIC(HYDRA_MAGIC, Prayer.PROTECT_FROM_MAGIC, SpriteID.PRAYER_PROTECT_FROM_MAGIC),
+        RANGED(HYDRA_RANGED, Prayer.PROTECT_FROM_MISSILES, SpriteID.PRAYER_PROTECT_FROM_MISSILES);
 
         private final int projectileID;
         private final Prayer prayer;

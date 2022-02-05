@@ -11,13 +11,16 @@ import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
 import net.runelite.api.Perspective;
 import net.runelite.api.Point;
-import net.runelite.api.ProjectileID;
+import net.runelite.api.Projectile;
 import net.runelite.api.Varbits;
 import net.runelite.api.coords.WorldPoint;
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
 import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayUtil;
+
+import static net.runelite.api.GraphicID.ICE_DEMON_ICE_BARRAGE_AOE;
+import static net.runelite.api.GraphicID.TEKTON_METEOR_AOE;
 
 @Slf4j
 @Singleton
@@ -68,7 +71,7 @@ public class AoeWarningOverlay extends Overlay {
                 return;
             }
 
-            if (proj.getProjectile().getId() == ProjectileID.ICE_DEMON_ICE_BARRAGE_AOE || proj.getProjectile().getId() == ProjectileID.TEKTON_METEOR_AOE) {
+            if (proj.getProjectile().getId() == ICE_DEMON_ICE_BARRAGE_AOE || proj.getProjectile().getId() == TEKTON_METEOR_AOE) {
                 if (client.getVar(Varbits.IN_RAID) == 0) {
                     log.debug("USER IS NOT IN A RAID. CANNOT TRACK ICE DEMON AND TEKTON");
                     return;
