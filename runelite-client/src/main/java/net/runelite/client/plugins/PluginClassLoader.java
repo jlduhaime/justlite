@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2016-2017, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,24 +22,36 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package net.runelite.client.plugins.loottracker;
+package net.runelite.client.plugins;
 
-import java.util.Collection;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import net.runelite.client.game.ItemStack;
-import net.runelite.http.api.loottracker.LootRecordType;
+import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
 
-/**
- * Event published by the loottracker plugin when new loot is received
- */
-@Data
-@AllArgsConstructor
-public class LootReceived
+class PluginClassLoader extends URLClassLoader
 {
-	private String name;
-	private int combatLevel;
-	private LootRecordType type;
-	private Collection<ItemStack> items;
-	private int amount;
+	private final ClassLoader parent;
+
+	PluginClassLoader(File plugin, ClassLoader parent) throws MalformedURLException
+	{
+		// null parent classloader, or else class path scanning includes everything from the main class loader
+		super(new URL[]{plugin.toURI().toURL()}, null);
+
+		this.parent = parent;
+	}
+
+	@Override
+	public Class<?> loadClass(String name) throws ClassNotFoundException
+	{
+		try
+		{
+			return super.loadClass(name);
+		}
+		catch (ClassNotFoundException ex)
+		{
+			// fall back to main class loader
+			return parent.loadClass(name);
+		}
+	}
 }

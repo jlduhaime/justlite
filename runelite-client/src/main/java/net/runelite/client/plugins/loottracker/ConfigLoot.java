@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2019, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022, Adam <Adam@sigterm.info>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -24,22 +24,50 @@
  */
 package net.runelite.client.plugins.loottracker;
 
-import java.util.Collection;
-import lombok.AllArgsConstructor;
+import java.time.Instant;
+import java.util.Arrays;
 import lombok.Data;
-import net.runelite.client.game.ItemStack;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 import net.runelite.http.api.loottracker.LootRecordType;
 
-/**
- * Event published by the loottracker plugin when new loot is received
- */
 @Data
-@AllArgsConstructor
-public class LootReceived
+@NoArgsConstructor
+@EqualsAndHashCode(of = {"type", "name"})
+class ConfigLoot
 {
-	private String name;
-	private int combatLevel;
-	private LootRecordType type;
-	private Collection<ItemStack> items;
-	private int amount;
+	LootRecordType type;
+	String name;
+	int kills;
+	Instant first = Instant.now();
+	Instant last;
+	int[] drops;
+
+	ConfigLoot(LootRecordType type, String name)
+	{
+		this.type = type;
+		this.name = name;
+		this.drops = new int[0];
+	}
+
+	void add(int id, int qty)
+	{
+		for (int i = 0; i < drops.length; i += 2)
+		{
+			if (drops[i] == id)
+			{
+				drops[i + 1] += qty;
+				return;
+			}
+		}
+
+		drops = Arrays.copyOf(drops, drops.length + 2);
+		drops[drops.length - 2] = id;
+		drops[drops.length - 1] = qty;
+	}
+
+	int numDrops()
+	{
+		return drops.length / 2;
+	}
 }
