@@ -27,9 +27,8 @@ package net.runelite.client.menus;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+
+import java.util.*;
 import java.util.function.Consumer;
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -41,6 +40,9 @@ import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.PlayerMenuOptionsChanged;
 import net.runelite.client.eventbus.EventBus;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.util.Text;
+
+import static net.runelite.client.menus.ComparableEntries.newBaseComparableEntry;
 
 @Singleton
 @Slf4j
@@ -58,12 +60,220 @@ public class MenuManager
 	private final Map<Integer, String> playerMenuIndexMap = new HashMap<>();
 	//Used to manage custom non-player menu options
 	private final Multimap<Integer, WidgetMenuOption> managedMenuOptions = LinkedHashMultimap.create();
+	private final Set<AbstractComparableEntry> priorityEntries = new HashSet<>();
+	private final Map<MenuEntry, AbstractComparableEntry> currentPriorityEntries = new LinkedHashMap<>();
+	private final Set<AbstractComparableEntry> hiddenEntries = new HashSet<>();
+	private final Map<AbstractComparableEntry, AbstractComparableEntry> swaps = new HashMap<>();
+
 
 	@Inject
 	private MenuManager(Client client, EventBus eventBus)
 	{
 		this.client = client;
 		eventBus.register(this);
+	}
+
+	public void removeHiddenEntry(String option, String target)
+	{
+		option = option.trim().toLowerCase();
+		target = Text.standardize(target);
+
+		AbstractComparableEntry entry = newBaseComparableEntry(option, target);
+
+		hiddenEntries.removeIf(entry::equals);
+	}
+
+	public void removeHiddenEntry(String option)
+	{
+		option = option.trim().toLowerCase();
+
+		AbstractComparableEntry entry = newBaseComparableEntry(option, "", false);
+
+		hiddenEntries.removeIf(entry::equals);
+	}
+
+	public void removeHiddenEntry(AbstractComparableEntry entry)
+	{
+		hiddenEntries.remove(entry);
+	}
+
+	public void addHiddenEntry(String option, String target)
+	{
+		option = option.trim().toLowerCase();
+		target = Text.standardize(target);
+
+		AbstractComparableEntry entry = newBaseComparableEntry(option, target);
+
+		hiddenEntries.add(entry);
+	}
+
+	public void addHiddenEntry(String option)
+	{
+		option = option.trim().toLowerCase();
+
+		AbstractComparableEntry entry = newBaseComparableEntry(option, "", false);
+
+		hiddenEntries.add(entry);
+	}
+
+	/**
+	 * Adds to the map of swaps. Strict options, not strict target but target1=target2
+	 */
+	public void addSwap(String option, String target, String option2)
+	{
+		addSwap(option, target, option2, target, true, false);
+	}
+
+	public void removeSwap(String option, String target, String option2)
+	{
+		removeSwap(option, target, option2, target, true, false);
+	}
+
+	/**
+	 * Adds to the map of swaps.
+	 */
+	private void addSwap(String option, String target, String option2, String target2, boolean strictOption, boolean strictTarget)
+	{
+		option = option.trim().toLowerCase();
+		target = Text.standardize(target);
+
+		option2 = option2.trim().toLowerCase();
+		target2 = Text.standardize(target2);
+
+		AbstractComparableEntry swapFrom = newBaseComparableEntry(option, target, -1, -1, strictOption, strictTarget);
+		AbstractComparableEntry swapTo = newBaseComparableEntry(option2, target2, -1, -1, strictOption, strictTarget);
+
+		if (swapTo.equals(swapFrom))
+		{
+			log.warn("You shouldn't try swapping an entry for itself");
+			return;
+		}
+
+		swaps.put(swapFrom, swapTo);
+	}
+
+
+	private void removeSwap(String option, String target, String option2, String target2, boolean strictOption, boolean strictTarget)
+	{
+		option = option.trim().toLowerCase();
+		target = Text.standardize(target);
+
+		option2 = option2.trim().toLowerCase();
+		target2 = Text.standardize(target2);
+
+		AbstractComparableEntry swapFrom = newBaseComparableEntry(option, target, -1, -1, strictOption, strictTarget);
+		AbstractComparableEntry swapTo = newBaseComparableEntry(option2, target2, -1, -1, strictOption, strictTarget);
+
+		removeSwap(swapFrom, swapTo);
+	}
+
+	/**
+	 * Adds to the map of swaps. - Strict option + target
+	 */
+	public void addSwap(String option, String target, String option2, String target2)
+	{
+		addSwap(option, target, option2, target2, false, false);
+	}
+
+	public void removeSwap(String option, String target, String option2, String target2)
+	{
+		removeSwap(option, target, option2, target2, false, false);
+	}
+
+	/**
+	 * Adds to the map of swaps - Pre-baked entry
+	 */
+	public void addSwap(AbstractComparableEntry swapFrom, AbstractComparableEntry swapTo)
+	{
+		if (swapTo.equals(swapFrom))
+		{
+			log.warn("You shouldn't try swapping an entry for itself");
+			return;
+		}
+
+		swaps.put(swapFrom, swapTo);
+	}
+
+	/**
+	 * Adds to the map of swaps - Non-strict option/target, but with opcode & id
+	 * ID's of -1 are ignored in matches()!
+	 */
+	public void addSwap(String option, String target, int id, int type, String option2, String target2, int id2, int type2)
+	{
+		option = option.trim().toLowerCase();
+		target = Text.standardize(target);
+
+		option2 = option2.trim().toLowerCase();
+		target2 = Text.standardize(target2);
+
+		AbstractComparableEntry swapFrom = newBaseComparableEntry(option, target, id, type, false, false);
+		AbstractComparableEntry swapTo = newBaseComparableEntry(option2, target2, id2, type2, false, false);
+
+		if (swapTo.equals(swapFrom))
+		{
+			log.warn("You shouldn't try swapping an entry for itself");
+			return;
+		}
+
+		swaps.put(swapFrom, swapTo);
+	}
+
+	public void removeSwap(String option, String target, int id, int type, String option2, String target2, int id2, int type2)
+	{
+		option = option.trim().toLowerCase();
+		target = Text.standardize(target);
+
+		option2 = option2.trim().toLowerCase();
+		target2 = Text.standardize(target2);
+
+		AbstractComparableEntry swapFrom = newBaseComparableEntry(option, target, id, type, false, false);
+		AbstractComparableEntry swapTo = newBaseComparableEntry(option2, target2, id2, type2, false, false);
+
+		swaps.entrySet().removeIf(e -> e.getKey().equals(swapFrom) && e.getValue().equals(swapTo));
+	}
+
+	public void removeSwap(AbstractComparableEntry swapFrom, AbstractComparableEntry swapTo)
+	{
+		swaps.entrySet().removeIf(e -> e.getKey().equals(swapFrom) && e.getValue().equals(swapTo));
+	}
+
+	/**
+	 * Removes all swaps with target
+	 */
+	public void removeSwaps(String... fromTarget)
+	{
+		for (String target : fromTarget)
+		{
+			final String s = Text.standardize(target);
+			swaps.keySet().removeIf(e -> e.getTarget() != null && e.getTarget().equals(s));
+			priorityEntries.removeIf(e -> e.getTarget() != null && e.getTarget().equals(s));
+			hiddenEntries.removeIf(e -> e.getTarget() != null && e.getTarget().equals(s));
+		}
+	}
+
+	public void addHiddenEntry(String option, String target, boolean strictOption, boolean strictTarget)
+	{
+		option = option.trim().toLowerCase();
+		target = Text.standardize(target);
+
+		AbstractComparableEntry entry = newBaseComparableEntry(option, target, -1, -1, strictOption, strictTarget);
+
+		hiddenEntries.add(entry);
+	}
+
+	public void addHiddenEntry(AbstractComparableEntry entry)
+	{
+		hiddenEntries.add(entry);
+	}
+
+	public void removeHiddenEntry(String option, String target, boolean strictOption, boolean strictTarget)
+	{
+		option = option.trim().toLowerCase();
+		target = Text.standardize(target);
+
+		AbstractComparableEntry entry = newBaseComparableEntry(option, target, -1, -1, strictOption, strictTarget);
+
+		hiddenEntries.remove(entry);
 	}
 
 	/**

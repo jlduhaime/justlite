@@ -37,6 +37,12 @@ package net.runelite.api.widgets;
 public final class WidgetID
 {
 	public static final int FAIRY_RING_PANEL_GROUP_ID = 381;
+	public static final int BA_ATTACKER_GROUP_ID = 485;
+	public static final int BA_COLLECTOR_GROUP_ID = 486;
+	public static final int BA_DEFENDER_GROUP_ID = 487;
+	public static final int BA_HEALER_GROUP_ID = 488;
+	public static final int BA_REWARD_GROUP_ID = 497;
+	public static final int BA_HORN_OF_GLORY = 484;
 	public static final int FAIRY_RING_GROUP_ID = 398;
 	public static final int LOGOUT_PANEL_ID = 182;
 	public static final int BANK_GROUP_ID = 12;
@@ -77,11 +83,6 @@ public final class WidgetID
 	public static final int PRIVATE_CHAT = 163;
 	public static final int CHATBOX_GROUP_ID = 162;
 	public static final int VOLCANIC_MINE_GROUP_ID = 611;
-	public static final int BA_ATTACKER_GROUP_ID = 485;
-	public static final int BA_COLLECTOR_GROUP_ID = 486;
-	public static final int BA_DEFENDER_GROUP_ID = 487;
-	public static final int BA_HEALER_GROUP_ID = 488;
-	public static final int BA_REWARD_GROUP_ID = 497;
 	public static final int BA_TEAM_GROUP_ID = 256;
 	public static final int LEVEL_UP_GROUP_ID = 233;
 	public static final int DIALOG_SPRITE_GROUP_ID = 193;
@@ -212,6 +213,63 @@ public final class WidgetID
 		static final int WORLD_SWITCHER_BUTTON = 3;
 		static final int LOGOUT_BUTTON = 6;
 	}
+
+	static class BarbarianAssault
+	{
+		static class ATK
+		{
+			static final int LISTEN_TOP = 7;
+			static final int LISTEN_BOTTOM = 8;
+			static final int TO_CALL_WIDGET = 9;
+			static final int TO_CALL = 10;
+			static final int ROLE_SPRITE = 11;
+			static final int ROLE = 12;
+		}
+		static class HLR
+		{
+			static final int TEAMMATE1 = 18;
+			static final int TEAMMATE2 = 22;
+			static final int TEAMMATE3 = 26;
+			static final int TEAMMATE4 = 30;
+		}
+		static class HORN_GLORY
+		{
+			static final int ATTACKER = 5;
+			static final int DEFENDER = 6;
+			static final int COLLECTOR = 7;
+			static final int HEALER = 8;
+		}
+		static class REWARD_VALUES
+		{
+			static final int RUNNERS_PASSED = 14;
+			static final int HITPOINTS_REPLENISHED = 19;
+			static final int WRONG_POISON_PACKS_USED = 20;
+			static final int EGGS_COLLECTED = 21;
+			static final int FAILED_ATTACKER_ATTACKS = 22;
+			static final int RUNNERS_PASSED_POINTS = 24;
+			static final int RANGERS_KILLED = 25;
+			static final int FIGHTERS_KILLED = 26;
+			static final int HEALERS_KILLED = 27;
+			static final int RUNNERS_KILLED = 28;
+			static final int HITPOINTS_REPLENISHED_POINTS = 29;
+			static final int WRONG_POISON_PACKS_USED_POINTS = 30;
+			static final int EGGS_COLLECTED_POINTS = 31;
+			static final int FAILED_ATTACKER_ATTACKS_POINTS = 32;
+			static final int BASE_POINTS = 33;
+			static final int HONOUR_POINTS_REWARD = 49;
+		}
+		static final int GAME_WIDGET = 3;
+		static final int CURRENT_WAVE_WIDGET = 4;
+		static final int CURRENT_WAVE = 5;
+		static final int LISTEN_WIDGET = 6;
+		static final int LISTEN = 7;
+		static final int TO_CALL_WIDGET = 8;
+		static final int TO_CALL = 9;
+		static final int ROLE_SPRITE = 10;
+		static final int ROLE = 11;
+		static final int REWARD_TEXT = 57;
+	}
+
 
 	static class PestControl
 	{
@@ -604,31 +662,6 @@ public final class WidgetID
 		static final int VENT_B_STATUS = 21;
 		static final int VENT_C_STATUS = 22;
 		static final int VENTS_INFOBOX_CONTAINER = 26;
-	}
-
-	static class BarbarianAssault
-	{
-		static class ATK
-		{
-			static final int ROLE_SPRITE = 11;
-			static final int ROLE = 12;
-		}
-
-		static class HLR
-		{
-			static final int TEAMMATES = 13;
-			static final int TEAMMATE1 = 18;
-			static final int TEAMMATE2 = 22;
-			static final int TEAMMATE3 = 26;
-			static final int TEAMMATE4 = 30;
-		}
-
-		static final int TEAM = 2;
-
-		static final int ROLE_SPRITE = 10;
-		static final int ROLE = 11;
-
-		static final int REWARD_TEXT = 57;
 	}
 
 	static class LevelUp
