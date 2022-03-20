@@ -83,29 +83,30 @@ public class ChatMessageManager
 	{
 		if (event.getGroup().equals("textrecolor"))
 		{
-            loadColors();
-            clientThread.invokeLater(client::refreshChat);
+			loadColors();
+			clientThread.invokeLater(client::refreshChat);
 		}
 	}
 
 	@VisibleForTesting
-	void colorChatMessage() {
-        final int[] intStack = client.getIntStack();
-        final String[] stringStack = client.getStringStack();
-        final int size = client.getStringStackSize();
-        final int isize = client.getIntStackSize();
-        final int uid = intStack[isize - 1];
-        final boolean splitpmbox = intStack[isize - 2] == 1;
+	void colorChatMessage()
+	{
+		final int[] intStack = client.getIntStack();
+		final String[] stringStack = client.getStringStack();
+		final int size = client.getStringStackSize();
+		final int isize = client.getIntStackSize();
+		final int uid = intStack[isize - 1];
+		final boolean splitpmbox = intStack[isize - 2] == 1;
 
-        final MessageNode messageNode = client.getMessages().get(uid);
-        assert messageNode != null : "chat message build for unknown message";
+		final MessageNode messageNode = client.getMessages().get(uid);
+		assert messageNode != null : "chat message build for unknown message";
 
-        String message = stringStack[size - 2];
-        final String username = stringStack[size - 3];
-        final String channel = stringStack[size - 4];
-        final ChatMessageType chatMessageType = messageNode.getType();
+		String message = stringStack[size - 2];
+		final String username = stringStack[size - 3];
+		final String channel = stringStack[size - 4];
+		final ChatMessageType chatMessageType = messageNode.getType();
 
-        final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
+		final boolean isChatboxTransparent = client.isResized() && client.getVar(Varbits.TRANSPARENT_CHATBOX) == 1;
 		Color usernameColor = null;
 		Color channelColor = null;
 
@@ -153,39 +154,46 @@ public class ChatMessageManager
 				break;
 		}
 
-        if (usernameColor != null) {
-            stringStack[size - 3] = ColorUtil.wrapWithColorTag(username, usernameColor);
-        }
+		if (usernameColor != null)
+		{
+			stringStack[size - 3] = ColorUtil.wrapWithColorTag(username, usernameColor);
+		}
 
-        if (channelColor != null && !Strings.isNullOrEmpty(channel)) {
-            stringStack[size - 4] = ColorUtil.wrapWithColorTag(channel, channelColor);
-        }
+		if (channelColor != null && !Strings.isNullOrEmpty(channel))
+		{
+			stringStack[size - 4] = ColorUtil.wrapWithColorTag(channel, channelColor);
+		}
 
-        if (messageNode.getRuneLiteFormatMessage() != null) {
-            stringStack[size - 2] = message = formatRuneLiteMessage(messageNode.getRuneLiteFormatMessage(),
-                    chatMessageType, splitpmbox);
-        }
+		String prefix = "";
+		if (chatMessageType == ChatMessageType.CLAN_GIM_CHAT || chatMessageType == ChatMessageType.CLAN_GIM_MESSAGE)
+		{
+			message = message.substring(1); // remove |
+			prefix = "|";
+		}
 
-        final Collection<ChatColor> chatColors = colorCache.get(chatMessageType);
-        for (ChatColor chatColor : chatColors) {
-            if (chatColor.isTransparent() != isChatboxTransparent || chatColor.getType() != ChatColorType.NORMAL || chatColor.isDefault()) {
-                continue;
-            }
+		if (messageNode.getRuneLiteFormatMessage() != null)
+		{
+			message = formatRuneLiteMessage(messageNode.getRuneLiteFormatMessage(),
+				chatMessageType, splitpmbox);
+		}
 
-            String prefix = "";
-			if (chatMessageType == ChatMessageType.CLAN_GIM_CHAT || chatMessageType == ChatMessageType.CLAN_GIM_MESSAGE)
+		final Collection<ChatColor> chatColors = colorCache.get(chatMessageType);
+		for (ChatColor chatColor : chatColors)
+		{
+			if (chatColor.isTransparent() != isChatboxTransparent || chatColor.getType() != ChatColorType.NORMAL || chatColor.isDefault())
 			{
-				message = message.substring(1); // remove |
-				prefix = "|";
+				continue;
 			}
 
 			// Replace </col> tags in the message with the new color so embedded </col> won't reset the color
 			final Color color = chatColor.getColor();
-			stringStack[size - 2] = prefix + ColorUtil.wrapWithColorTag(
+			message = ColorUtil.wrapWithColorTag(
 				message.replace(ColorUtil.CLOSING_COLOR_TAG, ColorUtil.colorTag(color)),
 				color);
 			break;
 		}
+
+		stringStack[size - 2] = prefix + message;
 	}
 
 	@Subscribe
@@ -231,151 +239,166 @@ public class ChatMessageManager
 		stringStack[stringStackSize - 1] = fromToUsername;
 	}
 
-	private static Color getDefaultColor(ChatMessageType type, boolean transparent) {
-        if (!transparent) {
-            switch (type) {
-                case PUBLICCHAT:
-                case MODCHAT:
-                    return JagexColors.CHAT_PUBLIC_TEXT_OPAQUE_BACKGROUND;
-                case PRIVATECHATOUT:
-                case MODPRIVATECHAT:
-                case PRIVATECHAT:
-                    return JagexColors.CHAT_PRIVATE_MESSAGE_TEXT_OPAQUE_BACKGROUND;
-                case FRIENDSCHAT:
-                case CLAN_CHAT:
-                case CLAN_GUEST_CHAT:
-                case CLAN_GIM_CHAT:
-                    return JagexColors.CHAT_FC_TEXT_OPAQUE_BACKGROUND;
-                case ITEM_EXAMINE:
-                case OBJECT_EXAMINE:
-                case NPC_EXAMINE:
-                case CONSOLE:
-                case FRIENDSCHATNOTIFICATION:
-                case CLAN_MESSAGE:
-                case CLAN_GUEST_MESSAGE:
-                case CLAN_GIM_MESSAGE:
-                    return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
-            }
-        } else {
-            switch (type) {
-                case PUBLICCHAT:
-                case MODCHAT:
-                    return JagexColors.CHAT_PUBLIC_TEXT_TRANSPARENT_BACKGROUND;
-                case PRIVATECHATOUT:
-                case MODPRIVATECHAT:
-                case PRIVATECHAT:
-                    return JagexColors.CHAT_PRIVATE_MESSAGE_TEXT_TRANSPARENT_BACKGROUND;
-                case FRIENDSCHAT:
-                case CLAN_CHAT:
-                case CLAN_GUEST_CHAT:
-                case CLAN_GIM_CHAT:
-                    return JagexColors.CHAT_FC_TEXT_TRANSPARENT_BACKGROUND;
-                case ITEM_EXAMINE:
-                case OBJECT_EXAMINE:
-                case NPC_EXAMINE:
-                case CONSOLE:
-                case FRIENDSCHATNOTIFICATION:
-                case CLAN_MESSAGE:
-                case CLAN_GUEST_MESSAGE:
-                case CLAN_GIM_MESSAGE:
-                    return JagexColors.CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND;
-            }
-        }
+	private static Color getDefaultColor(ChatMessageType type, boolean transparent)
+	{
+		if (!transparent)
+		{
+			switch (type)
+			{
+				case PUBLICCHAT:
+				case MODCHAT:
+					return JagexColors.CHAT_PUBLIC_TEXT_OPAQUE_BACKGROUND;
+				case PRIVATECHATOUT:
+				case MODPRIVATECHAT:
+				case PRIVATECHAT:
+					return JagexColors.CHAT_PRIVATE_MESSAGE_TEXT_OPAQUE_BACKGROUND;
+				case FRIENDSCHAT:
+				case CLAN_CHAT:
+				case CLAN_GUEST_CHAT:
+				case CLAN_GIM_CHAT:
+					return JagexColors.CHAT_FC_TEXT_OPAQUE_BACKGROUND;
+				case ITEM_EXAMINE:
+				case OBJECT_EXAMINE:
+				case NPC_EXAMINE:
+				case CONSOLE:
+				case FRIENDSCHATNOTIFICATION:
+				case CLAN_MESSAGE:
+				case CLAN_GUEST_MESSAGE:
+				case CLAN_GIM_MESSAGE:
+					return JagexColors.CHAT_GAME_EXAMINE_TEXT_OPAQUE_BACKGROUND;
+			}
+		}
+		else
+		{
+			switch (type)
+			{
+				case PUBLICCHAT:
+				case MODCHAT:
+					return JagexColors.CHAT_PUBLIC_TEXT_TRANSPARENT_BACKGROUND;
+				case PRIVATECHATOUT:
+				case MODPRIVATECHAT:
+				case PRIVATECHAT:
+					return JagexColors.CHAT_PRIVATE_MESSAGE_TEXT_TRANSPARENT_BACKGROUND;
+				case FRIENDSCHAT:
+				case CLAN_CHAT:
+				case CLAN_GUEST_CHAT:
+				case CLAN_GIM_CHAT:
+					return JagexColors.CHAT_FC_TEXT_TRANSPARENT_BACKGROUND;
+				case ITEM_EXAMINE:
+				case OBJECT_EXAMINE:
+				case NPC_EXAMINE:
+				case CONSOLE:
+				case FRIENDSCHATNOTIFICATION:
+				case CLAN_MESSAGE:
+				case CLAN_GUEST_MESSAGE:
+				case CLAN_GIM_MESSAGE:
+					return JagexColors.CHAT_GAME_EXAMINE_TEXT_TRANSPARENT_BACKGROUND;
+			}
+		}
 
-        return null;
-    }
+		return null;
+	}
 
-    // get the variable holding the chat color from the settings, from script4484
-    private static VarPlayer getSettingsColor(ChatMessageType type, boolean transparent) {
-        if (transparent) {
-            switch (type) {
-                case PUBLICCHAT:
-                case MODCHAT:
-                    return VarPlayer.SETTINGS_TRANSPARENT_CHAT_PUBLIC;
-                case PRIVATECHATOUT:
-                case MODPRIVATECHAT:
-                case PRIVATECHAT:
-                case LOGINLOGOUTNOTIFICATION:
-                    return VarPlayer.SETTINGS_TRANSPARENT_CHAT_PRIVATE;
-                case AUTOTYPER:
-                case MODAUTOTYPER:
-                    return VarPlayer.SETTINGS_TRANSPARENT_CHAT_AUTO;
-                case BROADCAST:
-                    return VarPlayer.SETTINGS_TRANSPARENT_CHAT_BROADCAST;
-                case FRIENDSCHAT:
-                    return VarPlayer.SETTINGS_TRANSPARENT_CHAT_FRIEND;
-                case CLAN_CHAT:
-                    return VarPlayer.SETTINGS_TRANSPARENT_CHAT_CLAN;
-                case TRADEREQ:
-                    return VarPlayer.SETTINGS_TRANSPARENT_CHAT_TRADE_REQUEST;
-                case CHALREQ_TRADE:
-                case CHALREQ_FRIENDSCHAT:
-                case CHALREQ_CLANCHAT:
-                    return VarPlayer.SETTINGS_TRANSPARENT_CHAT_CHALLENGE_REQUEST;
-                case CLAN_GUEST_CHAT:
-                    return VarPlayer.SETTINGS_TRANSPARENT_CHAT_GUEST_CLAN;
-                case CLAN_GIM_CHAT:
-                    return VarPlayer.SETTINGS_TRANSPARENT_CHAT_IRON_GROUP_CHAT;
-                case CLAN_MESSAGE:
-                    return VarPlayer.SETTINGS_TRANSPARENT_CHAT_CLAN_BROADCAST;
-                case CLAN_GIM_MESSAGE:
-                    return VarPlayer.SETTINGS_TRANSPARENT_CHAT_IRON_GROUP_BROADCAST;
-            }
-        } else {
-            switch (type) {
-                case PUBLICCHAT:
-                case MODCHAT:
-                    return VarPlayer.SETTINGS_OPAQUE_CHAT_PUBLIC;
-                case PRIVATECHATOUT:
-                case MODPRIVATECHAT:
-                case PRIVATECHAT:
-                case LOGINLOGOUTNOTIFICATION:
-                    return VarPlayer.SETTINGS_OPAQUE_CHAT_PRIVATE;
-                case AUTOTYPER:
-                case MODAUTOTYPER:
-                    return VarPlayer.SETTINGS_OPAQUE_CHAT_AUTO;
-                case BROADCAST:
-                    return VarPlayer.SETTINGS_OPAQUE_CHAT_BROADCAST;
-                case FRIENDSCHAT:
-                    return VarPlayer.SETTINGS_OPAQUE_CHAT_FRIEND;
-                case CLAN_CHAT:
-                    return VarPlayer.SETTINGS_OPAQUE_CHAT_CLAN;
-                case TRADEREQ:
-                    return VarPlayer.SETTINGS_OPAQUE_CHAT_TRADE_REQUEST;
-                case CHALREQ_TRADE:
-                case CHALREQ_FRIENDSCHAT:
-                case CHALREQ_CLANCHAT:
-                    return VarPlayer.SETTINGS_OPAQUE_CHAT_CHALLENGE_REQUEST;
-                case CLAN_GUEST_CHAT:
-                    return VarPlayer.SETTINGS_OPAQUE_CHAT_GUEST_CLAN;
-                case CLAN_GIM_CHAT:
-                    return VarPlayer.SETTINGS_OPAQUE_CHAT_IRON_GROUP_CHAT;
-                case CLAN_MESSAGE:
-                    return VarPlayer.SETTINGS_OPAQUE_CHAT_CLAN_BROADCAST;
-                case CLAN_GIM_MESSAGE:
-                    return VarPlayer.SETTINGS_OPAQUE_CHAT_IRON_GROUP_BROADCAST;
-            }
-        }
-        return null;
-    }
+	// get the variable holding the chat color from the settings, from script4484
+	private static VarPlayer getSettingsColor(ChatMessageType type, boolean transparent)
+	{
+		if (transparent)
+		{
+			switch (type)
+			{
+				case PUBLICCHAT:
+				case MODCHAT:
+					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_PUBLIC;
+				case PRIVATECHATOUT:
+				case MODPRIVATECHAT:
+				case PRIVATECHAT:
+				case LOGINLOGOUTNOTIFICATION:
+					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_PRIVATE;
+				case AUTOTYPER:
+				case MODAUTOTYPER:
+					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_AUTO;
+				case BROADCAST:
+					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_BROADCAST;
+				case FRIENDSCHAT:
+					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_FRIEND;
+				case CLAN_CHAT:
+					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_CLAN;
+				case TRADEREQ:
+					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_TRADE_REQUEST;
+				case CHALREQ_TRADE:
+				case CHALREQ_FRIENDSCHAT:
+				case CHALREQ_CLANCHAT:
+					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_CHALLENGE_REQUEST;
+				case CLAN_GUEST_CHAT:
+					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_GUEST_CLAN;
+				case CLAN_GIM_CHAT:
+					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_IRON_GROUP_CHAT;
+				case CLAN_MESSAGE:
+					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_CLAN_BROADCAST;
+				case CLAN_GIM_MESSAGE:
+					return VarPlayer.SETTINGS_TRANSPARENT_CHAT_IRON_GROUP_BROADCAST;
+			}
+		}
+		else
+		{
+			switch (type)
+			{
+				case PUBLICCHAT:
+				case MODCHAT:
+					return VarPlayer.SETTINGS_OPAQUE_CHAT_PUBLIC;
+				case PRIVATECHATOUT:
+				case MODPRIVATECHAT:
+				case PRIVATECHAT:
+				case LOGINLOGOUTNOTIFICATION:
+					return VarPlayer.SETTINGS_OPAQUE_CHAT_PRIVATE;
+				case AUTOTYPER:
+				case MODAUTOTYPER:
+					return VarPlayer.SETTINGS_OPAQUE_CHAT_AUTO;
+				case BROADCAST:
+					return VarPlayer.SETTINGS_OPAQUE_CHAT_BROADCAST;
+				case FRIENDSCHAT:
+					return VarPlayer.SETTINGS_OPAQUE_CHAT_FRIEND;
+				case CLAN_CHAT:
+					return VarPlayer.SETTINGS_OPAQUE_CHAT_CLAN;
+				case TRADEREQ:
+					return VarPlayer.SETTINGS_OPAQUE_CHAT_TRADE_REQUEST;
+				case CHALREQ_TRADE:
+				case CHALREQ_FRIENDSCHAT:
+				case CHALREQ_CLANCHAT:
+					return VarPlayer.SETTINGS_OPAQUE_CHAT_CHALLENGE_REQUEST;
+				case CLAN_GUEST_CHAT:
+					return VarPlayer.SETTINGS_OPAQUE_CHAT_GUEST_CLAN;
+				case CLAN_GIM_CHAT:
+					return VarPlayer.SETTINGS_OPAQUE_CHAT_IRON_GROUP_CHAT;
+				case CLAN_MESSAGE:
+					return VarPlayer.SETTINGS_OPAQUE_CHAT_CLAN_BROADCAST;
+				case CLAN_GIM_MESSAGE:
+					return VarPlayer.SETTINGS_OPAQUE_CHAT_IRON_GROUP_BROADCAST;
+			}
+		}
+		return null;
+	}
 
-    /**
-     * Load all configured colors
-     */
-    private void loadColors() {
-        colorCache.clear();
+	/**
+	 * Load all configured colors
+	 */
+	private void loadColors()
+	{
+		colorCache.clear();
 
 		// Apply defaults
 		for (ChatMessageType chatMessageType : ChatMessageType.values())
 		{
 			Color defaultTransparent = getDefaultColor(chatMessageType, true);
-			if (defaultTransparent != null) {
-                cacheColor(new ChatColor(ChatColorType.NORMAL, defaultTransparent, true, true, getSettingsColor(chatMessageType, true)), chatMessageType);
+			if (defaultTransparent != null)
+			{
+				cacheColor(new ChatColor(ChatColorType.NORMAL, defaultTransparent, true, true, getSettingsColor(chatMessageType, true)), chatMessageType);
 			}
 
 			Color defaultOpaque = getDefaultColor(chatMessageType, false);
-			if (defaultOpaque != null) {
-                cacheColor(new ChatColor(ChatColorType.NORMAL, defaultOpaque, false, true, getSettingsColor(chatMessageType, false)), chatMessageType);
+			if (defaultOpaque != null)
+			{
+				cacheColor(new ChatColor(ChatColorType.NORMAL, defaultOpaque, false, true, getSettingsColor(chatMessageType, false)), chatMessageType);
 			}
 		}
 
@@ -791,10 +814,10 @@ public class ChatMessageManager
 
 		// this updates chat cycle
 		final MessageNode line = client.addChatMessage(
-                message.getType(),
-                MoreObjects.firstNonNull(message.getName(), ""),
-                MoreObjects.firstNonNull(message.getRuneLiteFormattedMessage(), message.getValue()),
-                message.getSender());
+			message.getType(),
+			MoreObjects.firstNonNull(message.getName(), ""),
+			MoreObjects.firstNonNull(message.getRuneLiteFormattedMessage(), message.getValue()),
+			message.getSender());
 
 		// Update the message with RuneLite additions
 		line.setRuneLiteFormatMessage(message.getRuneLiteFormattedMessage());
@@ -803,58 +826,67 @@ public class ChatMessageManager
 		{
 			line.setTimestamp(message.getTimestamp());
 		}
-    }
+	}
 
-    /**
-     * Rebuild the message node message from the RuneLite format message.
-     * DEPRECATED: no longer needs to be called.
-     *
-     * @param messageNode message node
-     */
-    @Deprecated
-    public void update(final MessageNode messageNode) {
-    }
+	/**
+	 * Rebuild the message node message from the RuneLite format message.
+	 * DEPRECATED: no longer needs to be called.
+	 *
+	 * @param messageNode message node
+	 */
+	@Deprecated
+	public void update(final MessageNode messageNode)
+	{
+	}
 
-    @VisibleForTesting
-    String formatRuneLiteMessage(String runeLiteFormatMessage, ChatMessageType type, boolean pmbox) {
-        final boolean transparentChatbox = client.getVar(Varbits.TRANSPARENT_CHATBOX) != 0;
-        final boolean transparent = client.isResized() && transparentChatbox;
-        final Collection<ChatColor> chatColors = colorCache.get(type);
-        for (ChatColor chatColor : chatColors) {
-            if (chatColor.isTransparent() == transparent) {
-                String colstr;
+	@VisibleForTesting
+	String formatRuneLiteMessage(String runeLiteFormatMessage, ChatMessageType type, boolean pmbox)
+	{
+		final boolean transparentChatbox = client.getVar(Varbits.TRANSPARENT_CHATBOX) != 0;
+		final boolean transparent = client.isResized() && transparentChatbox;
+		final Collection<ChatColor> chatColors = colorCache.get(type);
+		for (ChatColor chatColor : chatColors)
+		{
+			if (chatColor.isTransparent() == transparent)
+			{
+				String colstr;
 
-                if (pmbox && chatColor.getType() == ChatColorType.NORMAL) {
-                    // The default ChatColors for private have the chatbox text color, not the split chat color,
-                    // and the split chat color is set by widget color, so just use </col>. The in-game
-                    // private chat color doesn't apply to split chat either so using that here also is incorrect.
-                    //
-                    // If we recolor the final message later we replace </col> with the desired color in
-                    // colorChatMessage()
-                    colstr = ColorUtil.CLOSING_COLOR_TAG;
-                } else {
-                    Color color = chatColor.getColor();
+				if (pmbox && chatColor.getType() == ChatColorType.NORMAL)
+				{
+					// The default ChatColors for private have the chatbox text color, not the split chat color,
+					// and the split chat color is set by widget color, so just use </col>. The in-game
+					// private chat color doesn't apply to split chat either so using that here also is incorrect.
+					//
+					// If we recolor the final message later we replace </col> with the desired color in
+					// colorChatMessage()
+					colstr = ColorUtil.CLOSING_COLOR_TAG;
+				}
+				else
+				{
+					Color color = chatColor.getColor();
 
-                    VarPlayer varp = chatColor.getSetting();
-                    if (varp != null) {
-                        // Apply configured color from game settings, if set
-                        assert chatColor.isDefault();
-                        int v = client.getVar(varp);
-                        if (v != 0) {
-                            color = new Color(v - 1);
-                        }
-                    }
+					VarPlayer varp = chatColor.getSetting();
+					if (varp != null)
+					{
+						// Apply configured color from game settings, if set
+						assert chatColor.isDefault();
+						int v = client.getVar(varp);
+						if (v != 0)
+						{
+							color = new Color(v - 1);
+						}
+					}
 
-                    colstr = ColorUtil.colorTag(color);
-                }
+					colstr = ColorUtil.colorTag(color);
+				}
 
-                // Replace custom formatting with actual colors
-                runeLiteFormatMessage = runeLiteFormatMessage.replaceAll(
-                        "<col" + chatColor.getType().name() + ">",
-                        colstr);
-            }
-        }
+				// Replace custom formatting with actual colors
+				runeLiteFormatMessage = runeLiteFormatMessage.replaceAll(
+					"<col" + chatColor.getType().name() + ">",
+					colstr);
+			}
+		}
 
-        return runeLiteFormatMessage;
+		return runeLiteFormatMessage;
 	}
 }

@@ -60,23 +60,20 @@ public interface GraphicsObject extends Renderable
 	int getLevel();
 
 	/**
-	 * Gets the height of the graphic.
+	 * Gets the z coordinate
+	 */
+	int getZ();
+
+	/**
+	 * Checks if this spotanim is done animating
 	 *
-     * @return the height
-     */
-    int getHeight();
+	 * @return
+	 */
+	boolean finished();
 
-    /**
-     * Checks if this spotanim is done animating
-     *
-     * @return
-     */
-    boolean finished();
-
-    /**
-     * Set if this spotanim is done animating. If finished, the spotanim will despawn next frame.
-     *
-     * @param finished
-     */
-    void setFinished(boolean finished);
+	/**
+	 * Set if this spotanim is done animating. If finished, the spotanim will despawn next frame.
+	 * @param finished
+	 */
+	void setFinished(boolean finished);
 }
