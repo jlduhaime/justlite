@@ -2041,4 +2041,6 @@ public interface Client extends OAuthApi, GameEngine
 	 * @return
 	 */
 	Deque<AmbientSoundEffect> getAmbientSoundEffects();
+	void addHiddenNpcDeath(String name);
+	void removeHiddenNpcDeath(String s);
 }
