@@ -54,10 +54,7 @@ import lombok.Setter;
 import lombok.Value;
 import net.runelite.api.Client;
 import net.runelite.api.GameState;
-import net.runelite.api.InventoryID;
-import net.runelite.api.Item;
 import net.runelite.api.ItemComposition;
-import net.runelite.api.ItemContainer;
 import net.runelite.api.ItemID;
 import net.runelite.api.MenuAction;
 import net.runelite.api.MenuEntry;
@@ -72,6 +69,7 @@ import net.runelite.api.events.ItemQuantityChanged;
 import net.runelite.api.events.ItemSpawned;
 import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.MenuOptionClicked;
+import net.runelite.api.widgets.WidgetInfo;
 import net.runelite.client.Notifier;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
@@ -480,55 +478,62 @@ public class GroundItemsPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onMenuEntryAdded(MenuEntryAdded event) {
-        MenuAction type = MenuAction.of(event.getType());
-        if (type == MenuAction.GROUND_ITEM_FIRST_OPTION || type == MenuAction.GROUND_ITEM_SECOND_OPTION ||
-                type == MenuAction.GROUND_ITEM_THIRD_OPTION || type == MenuAction.GROUND_ITEM_FOURTH_OPTION ||
-                type == MenuAction.GROUND_ITEM_FIFTH_OPTION || type == MenuAction.SPELL_CAST_ON_GROUND_ITEM) {
-            final int itemId = event.getIdentifier();
-            final int sceneX = event.getActionParam0();
-            final int sceneY = event.getActionParam1();
+	public void onMenuEntryAdded(MenuEntryAdded event)
+	{
+		MenuAction type = MenuAction.of(event.getType());
+		if (type == MenuAction.GROUND_ITEM_FIRST_OPTION || type == MenuAction.GROUND_ITEM_SECOND_OPTION ||
+			type == MenuAction.GROUND_ITEM_THIRD_OPTION || type == MenuAction.GROUND_ITEM_FOURTH_OPTION ||
+			type == MenuAction.GROUND_ITEM_FIFTH_OPTION || type == MenuAction.WIDGET_TARGET_ON_GROUND_ITEM)
+		{
+			final int itemId = event.getIdentifier();
+			final int sceneX = event.getActionParam0();
+			final int sceneY = event.getActionParam1();
 
-            MenuEntry[] menuEntries = client.getMenuEntries();
-            MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
+			MenuEntry[] menuEntries = client.getMenuEntries();
+			MenuEntry lastEntry = menuEntries[menuEntries.length - 1];
 
-            final WorldPoint worldPoint = WorldPoint.fromScene(client, sceneX, sceneY, client.getPlane());
-            GroundItem groundItem = collectedGroundItems.get(worldPoint, itemId);
-            int quantity = groundItem.getQuantity();
+			final WorldPoint worldPoint = WorldPoint.fromScene(client, sceneX, sceneY, client.getPlane());
+			GroundItem groundItem = collectedGroundItems.get(worldPoint, itemId);
+			int quantity = groundItem.getQuantity();
 
-            final int gePrice = groundItem.getGePrice();
-            final int haPrice = groundItem.getHaPrice();
-            final Color hidden = getHidden(new NamedQuantity(groundItem.getName(), quantity), gePrice, haPrice, groundItem.isTradeable());
-            final Color highlighted = getHighlighted(new NamedQuantity(groundItem.getName(), quantity), gePrice, haPrice);
-            final Color color = getItemColor(highlighted, hidden);
-            final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
+			final int gePrice = groundItem.getGePrice();
+			final int haPrice = groundItem.getHaPrice();
+			final Color hidden = getHidden(new NamedQuantity(groundItem.getName(), quantity), gePrice, haPrice, groundItem.isTradeable());
+			final Color highlighted = getHighlighted(new NamedQuantity(groundItem.getName(), quantity), gePrice, haPrice);
+			final Color color = getItemColor(highlighted, hidden);
+			final boolean canBeRecolored = highlighted != null || (hidden != null && config.recolorMenuHiddenItems());
 
-            if ((config.itemHighlightMode() == ItemHighlightMode.MENU || config.itemHighlightMode() == ItemHighlightMode.BOTH) &&
-                    (color != null && canBeRecolored && !color.equals(config.defaultColor()))) {
-                final MenuHighlightMode mode = config.menuHighlightMode();
+			if ((config.itemHighlightMode() == ItemHighlightMode.MENU || config.itemHighlightMode() == ItemHighlightMode.BOTH) &&
+				(color != null && canBeRecolored && !color.equals(config.defaultColor())))
+			{
+				final MenuHighlightMode mode = config.menuHighlightMode();
 
-                if (mode == BOTH || mode == OPTION) {
-                    lastEntry.setOption(ColorUtil.prependColorTag(lastEntry.getOption(), color));
-                }
+				if (mode == BOTH || mode == OPTION)
+				{
+					lastEntry.setOption(ColorUtil.prependColorTag(lastEntry.getOption(), color));
+				}
 
-                if (mode == BOTH || mode == NAME) {
-                    // <col=ff9040>Logs
-                    // <col=00ff00>Telekinetic Grab</col><col=ffffff> -> <col=ff9040>Logs
-                    String target = lastEntry.getTarget();
+				if (mode == BOTH || mode == NAME)
+				{
+					// <col=ff9040>Logs
+					// <col=00ff00>Telekinetic Grab</col><col=ffffff> -> <col=ff9040>Logs
+					String target = lastEntry.getTarget();
 
-                    int i = target.lastIndexOf('>');
-                    lastEntry.setTarget(target.substring(0, i - 11) + ColorUtil.colorTag(color) + target.substring(i + 1));
-                }
-            }
+					int i = target.lastIndexOf('>');
+					lastEntry.setTarget(target.substring(0, i - 11) + ColorUtil.colorTag(color) + target.substring(i + 1));
+				}
+			}
 
-            if (config.showMenuItemQuantities() && groundItem.isStackable() && quantity > 1) {
-                lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
-            }
+			if (config.showMenuItemQuantities() && groundItem.isStackable() && quantity > 1)
+			{
+				lastEntry.setTarget(lastEntry.getTarget() + " (" + quantity + ")");
+			}
 
-            if (hidden != null && highlighted == null && config.deprioritizeHiddenItems()) {
-                lastEntry.setDeprioritized(true);
-            }
-        }
+			if (hidden != null && highlighted == null && config.deprioritizeHiddenItems())
+			{
+				lastEntry.setDeprioritized(true);
+			}
+		}
 	}
 
 	void updateList(String item, boolean hiddenList)
@@ -658,7 +663,7 @@ public class GroundItemsPlugin extends Plugin
 			{
 				notificationStringBuilder.append(" (")
 					.append(QuantityFormatter.quantityToStackSize(item.getQuantity()))
-					.append(")");
+					.append(')');
 			}
 		}
 		
@@ -681,28 +686,16 @@ public class GroundItemsPlugin extends Plugin
 	@Subscribe
 	public void onMenuOptionClicked(MenuOptionClicked menuOptionClicked)
 	{
-		if (menuOptionClicked.getMenuAction() == MenuAction.ITEM_FIFTH_OPTION)
+		if (menuOptionClicked.isItemOp() && menuOptionClicked.getMenuOption().equals("Drop"))
 		{
-			int itemId = menuOptionClicked.getId();
+			int itemId = menuOptionClicked.getItemId();
 			// Keep a queue of recently dropped items to better detect
 			// item spawns that are drops
 			droppedItemQueue.add(itemId);
 		}
-		else if (menuOptionClicked.getMenuAction() == MenuAction.ITEM_USE_ON_GAME_OBJECT)
+		else if (menuOptionClicked.getMenuAction() == MenuAction.WIDGET_TARGET_ON_GAME_OBJECT && client.getSelectedWidget().getId() == WidgetInfo.INVENTORY.getId())
 		{
-			final ItemContainer inventory = client.getItemContainer(InventoryID.INVENTORY);
-			if (inventory == null)
-			{
-				return;
-			}
-
-			final Item clickedItem = inventory.getItem(menuOptionClicked.getSelectedItemIndex());
-			if (clickedItem == null)
-			{
-				return;
-			}
-
-			lastUsedItem = clickedItem.getId();
+			lastUsedItem = client.getSelectedWidget().getItemId();
 		}
 	}
 
@@ -787,13 +780,13 @@ public class GroundItemsPlugin extends Plugin
 		Lootbeam lootbeam = lootbeams.get(worldPoint);
 		if (lootbeam == null)
 		{
-            lootbeam = new Lootbeam(client, clientThread, worldPoint, color, config.lootbeamStyle());
-            lootbeams.put(worldPoint, lootbeam);
+			lootbeam = new Lootbeam(client, clientThread, worldPoint, color, config.lootbeamStyle());
+			lootbeams.put(worldPoint, lootbeam);
 		}
 		else
 		{
-            lootbeam.setColor(color);
-            lootbeam.setStyle(config.lootbeamStyle());
+			lootbeam.setColor(color);
+			lootbeam.setStyle(config.lootbeamStyle());
 		}
 	}
 

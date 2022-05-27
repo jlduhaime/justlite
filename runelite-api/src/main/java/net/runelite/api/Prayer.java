@@ -154,7 +154,7 @@ public enum Prayer {
 	/**
 	 * Gets the varbit that stores whether the prayer is active or not.
 	 */
-	private final Varbits varbit;
+	private final int varbit;
 
 	/**
 	 * Gets the prayer drain rate (measured in pray points/minute)
