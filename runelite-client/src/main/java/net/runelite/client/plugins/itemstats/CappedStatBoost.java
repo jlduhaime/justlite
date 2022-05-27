@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022, Adam <Adam@sigterm.info>
+ * Copyright (c) 2022 Hydrox6 <ikada@protonmail.ch>
  * All rights reserved.
  *
  * Redistribution and use in source and binary forms, with or without
@@ -22,11 +22,41 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.jagex.oldscape.pub;
+package net.runelite.client.plugins.itemstats;
 
-public interface OtlTokenResponse
+import net.runelite.api.Client;
+import net.runelite.client.plugins.itemstats.delta.DeltaCalculator;
+import net.runelite.client.plugins.itemstats.stats.Stat;
+
+/**
+ * A stat boost using the real stat level, that can only boost a certain amount above the stat level.
+ */
+public class CappedStatBoost extends StatBoost
 {
-	boolean isSuccess();
+	private final DeltaCalculator deltaCalculator;
+	private final DeltaCalculator capCalculator;
 
-	String getToken();
+	public CappedStatBoost(Stat stat, DeltaCalculator deltaCalculator, DeltaCalculator capCalculator)
+	{
+		super(stat, true);
+		this.deltaCalculator = deltaCalculator;
+		this.capCalculator = capCalculator;
+	}
+
+	@Override
+	public int heals(Client client)
+	{
+		final int current = getStat().getValue(client);
+		final int max = getStat().getMaximum(client);
+		final int delta = deltaCalculator.calculateDelta(max);
+		final int cap = capCalculator.calculateDelta(max);
+
+		if (delta + current <= max + cap)
+		{
+			return delta;
+		}
+
+		return max + cap - current;
+	}
+
 }
