@@ -120,32 +120,39 @@ public class ItemChargePlugin extends Plugin
 		"Your bracelet of slaughter prevents your slayer count from decreasing. (?:(?:It has (\\d{1,2}) charges? left)|(It then crumbles to dust))\\."
 	);
 	private static final Pattern BRACELET_OF_SLAUGHTER_CHECK_PATTERN = Pattern.compile(
-            "Your bracelet of slaughter has (\\d{1,2}) charges? left\\."
-    );
-    private static final String BRACELET_OF_SLAUGHTER_BREAK_TEXT = "Your Bracelet of Slaughter has crumbled to dust.";
-    private static final Pattern EXPEDITIOUS_BRACELET_ACTIVATE_PATTERN = Pattern.compile(
-            "Your expeditious bracelet helps you progress your slayer (?:task )?faster. (?:(?:It has (\\d{1,2}) charges? left)|(It then crumbles to dust))\\."
-    );
-    private static final Pattern EXPEDITIOUS_BRACELET_CHECK_PATTERN = Pattern.compile(
-            "Your expeditious bracelet has (\\d{1,2}) charges? left\\."
-    );
-    private static final String EXPEDITIOUS_BRACELET_BREAK_TEXT = "Your Expeditious Bracelet has crumbled to dust.";
-    private static final Pattern BLOOD_ESSENCE_CHECK_PATTERN = Pattern.compile(
-            "Your blood essence has (\\d{1,4}) charges? remaining"
-    );
-    private static final Pattern BLOOD_ESSENCE_EXTRACT_PATTERN = Pattern.compile(
-            "You manage to extract power from the Blood Essence and craft (\\d{1,3}) extra runes?\\."
-    );
-    private static final String BLOOD_ESSENCE_ACTIVATE_TEXT = "You activate the blood essence.";
+		"Your bracelet of slaughter has (\\d{1,2}) charges? left\\."
+	);
+	private static final String BRACELET_OF_SLAUGHTER_BREAK_TEXT = "Your Bracelet of Slaughter has crumbled to dust.";
+	private static final Pattern EXPEDITIOUS_BRACELET_ACTIVATE_PATTERN = Pattern.compile(
+		"Your expeditious bracelet helps you progress your slayer (?:task )?faster. (?:(?:It has (\\d{1,2}) charges? left)|(It then crumbles to dust))\\."
+	);
+	private static final Pattern EXPEDITIOUS_BRACELET_CHECK_PATTERN = Pattern.compile(
+		"Your expeditious bracelet has (\\d{1,2}) charges? left\\."
+	);
+	private static final String EXPEDITIOUS_BRACELET_BREAK_TEXT = "Your Expeditious Bracelet has crumbled to dust.";
+	private static final Pattern BLOOD_ESSENCE_CHECK_PATTERN = Pattern.compile(
+		"Your blood essence has (\\d{1,4}) charges? remaining"
+	);
+	private static final Pattern BLOOD_ESSENCE_EXTRACT_PATTERN = Pattern.compile(
+		"You manage to extract power from the Blood Essence and craft (\\d{1,3}) extra runes?\\."
+	);
+	private static final String BLOOD_ESSENCE_ACTIVATE_TEXT = "You activate the blood essence.";
+	private static final String BRACELET_OF_CLAY_USE_TEXT = "You manage to mine some clay.";
+	private static final String BRACELET_OF_CLAY_USE_TEXT_TRAHAEARN = "You manage to mine some soft clay.";
+	private static final String BRACELET_OF_CLAY_BREAK_TEXT = "Your bracelet of clay crumbles to dust.";
+	private static final Pattern BRACELET_OF_CLAY_CHECK_PATTERN = Pattern.compile(
+		"You can mine (\\d{1,2}) more pieces? of soft clay before your bracelet crumbles to dust\\."
+	);
 
-    private static final int MAX_DODGY_CHARGES = 10;
-    private static final int MAX_BINDING_CHARGES = 16;
-    private static final int MAX_EXPLORER_RING_CHARGES = 30;
-    private static final int MAX_RING_OF_FORGING_CHARGES = 140;
-    private static final int MAX_AMULET_OF_CHEMISTRY_CHARGES = 5;
-    private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
-    private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
-    private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
+	private static final int MAX_DODGY_CHARGES = 10;
+	private static final int MAX_BINDING_CHARGES = 16;
+	private static final int MAX_EXPLORER_RING_CHARGES = 30;
+	private static final int MAX_RING_OF_FORGING_CHARGES = 140;
+	private static final int MAX_AMULET_OF_CHEMISTRY_CHARGES = 5;
+	private static final int MAX_AMULET_OF_BOUNTY_CHARGES = 10;
+	private static final int MAX_SLAYER_BRACELET_CHARGES = 30;
+	private static final int MAX_BLOOD_ESSENCE_CHARGES = 1000;
+	private static final int MAX_BRACELET_OF_CLAY_CHARGES = 28;
 
 	private int lastExplorerRingCharge = -1;
 
@@ -225,24 +232,29 @@ public class ItemChargePlugin extends Plugin
 			Matcher bindingNecklaceUsedMatcher = BINDING_USED_PATTERN.matcher(message);
 			Matcher ringOfForgingCheckMatcher = RING_OF_FORGING_CHECK_PATTERN.matcher(message);
 			Matcher amuletOfChemistryCheckMatcher = AMULET_OF_CHEMISTRY_CHECK_PATTERN.matcher(message);
-            Matcher amuletOfChemistryUsedMatcher = AMULET_OF_CHEMISTRY_USED_PATTERN.matcher(message);
-            Matcher amuletOfChemistryBreakMatcher = AMULET_OF_CHEMISTRY_BREAK_PATTERN.matcher(message);
-            Matcher amuletOfBountyCheckMatcher = AMULET_OF_BOUNTY_CHECK_PATTERN.matcher(message);
-            Matcher amuletOfBountyUsedMatcher = AMULET_OF_BOUNTY_USED_PATTERN.matcher(message);
-            Matcher chronicleAddMatcher = CHRONICLE_ADD_PATTERN.matcher(message);
-            Matcher chronicleUseAndCheckMatcher = CHRONICLE_USE_AND_CHECK_PATTERN.matcher(message);
-            Matcher slaughterActivateMatcher = BRACELET_OF_SLAUGHTER_ACTIVATE_PATTERN.matcher(message);
-            Matcher slaughterCheckMatcher = BRACELET_OF_SLAUGHTER_CHECK_PATTERN.matcher(message);
-            Matcher expeditiousActivateMatcher = EXPEDITIOUS_BRACELET_ACTIVATE_PATTERN.matcher(message);
-            Matcher expeditiousCheckMatcher = EXPEDITIOUS_BRACELET_CHECK_PATTERN.matcher(message);
-            Matcher bloodEssenceCheckMatcher = BLOOD_ESSENCE_CHECK_PATTERN.matcher(message);
-            Matcher bloodEssenceExtractMatcher = BLOOD_ESSENCE_EXTRACT_PATTERN.matcher(message);
+			Matcher amuletOfChemistryUsedMatcher = AMULET_OF_CHEMISTRY_USED_PATTERN.matcher(message);
+			Matcher amuletOfChemistryBreakMatcher = AMULET_OF_CHEMISTRY_BREAK_PATTERN.matcher(message);
+			Matcher amuletOfBountyCheckMatcher = AMULET_OF_BOUNTY_CHECK_PATTERN.matcher(message);
+			Matcher amuletOfBountyUsedMatcher = AMULET_OF_BOUNTY_USED_PATTERN.matcher(message);
+			Matcher chronicleAddMatcher = CHRONICLE_ADD_PATTERN.matcher(message);
+			Matcher chronicleUseAndCheckMatcher = CHRONICLE_USE_AND_CHECK_PATTERN.matcher(message);
+			Matcher slaughterActivateMatcher = BRACELET_OF_SLAUGHTER_ACTIVATE_PATTERN.matcher(message);
+			Matcher slaughterCheckMatcher = BRACELET_OF_SLAUGHTER_CHECK_PATTERN.matcher(message);
+			Matcher expeditiousActivateMatcher = EXPEDITIOUS_BRACELET_ACTIVATE_PATTERN.matcher(message);
+			Matcher expeditiousCheckMatcher = EXPEDITIOUS_BRACELET_CHECK_PATTERN.matcher(message);
+			Matcher bloodEssenceCheckMatcher = BLOOD_ESSENCE_CHECK_PATTERN.matcher(message);
+			Matcher bloodEssenceExtractMatcher = BLOOD_ESSENCE_EXTRACT_PATTERN.matcher(message);
+			Matcher braceletOfClayCheckMatcher = BRACELET_OF_CLAY_CHECK_PATTERN.matcher(message);
 
-            if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE)) {
-                notifier.notify("Your Ring of Recoil has shattered");
-            } else if (dodgyBreakMatcher.find()) {
-                if (config.dodgyNotification()) {
-                    notifier.notify("Your dodgy necklace has crumbled to dust.");
+			if (config.recoilNotification() && message.contains(RING_OF_RECOIL_BREAK_MESSAGE))
+			{
+				notifier.notify("Your Ring of Recoil has shattered");
+			}
+			else if (dodgyBreakMatcher.find())
+			{
+				if (config.dodgyNotification())
+				{
+					notifier.notify("Your dodgy necklace has crumbled to dust.");
 				}
 
 				updateDodgyNecklaceCharges(MAX_DODGY_CHARGES);
@@ -419,15 +431,45 @@ public class ItemChargePlugin extends Plugin
 					updateExpeditiousBraceletCharges(Integer.parseInt(found));
 				}
 			}
-			else if (expeditiousCheckMatcher.find()) {
-                updateExpeditiousBraceletCharges(Integer.parseInt(expeditiousCheckMatcher.group(1)));
-            } else if (bloodEssenceCheckMatcher.find()) {
-                updateBloodEssenceCharges(Integer.parseInt(bloodEssenceCheckMatcher.group(1)));
-            } else if (bloodEssenceExtractMatcher.find()) {
-                updateBloodEssenceCharges(getItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE) - Integer.parseInt(bloodEssenceExtractMatcher.group(1)));
-            } else if (message.contains(BLOOD_ESSENCE_ACTIVATE_TEXT)) {
-                updateBloodEssenceCharges(MAX_BLOOD_ESSENCE_CHARGES);
-            }
+			else if (expeditiousCheckMatcher.find())
+			{
+				updateExpeditiousBraceletCharges(Integer.parseInt(expeditiousCheckMatcher.group(1)));
+			}
+			else if (bloodEssenceCheckMatcher.find())
+			{
+				updateBloodEssenceCharges(Integer.parseInt(bloodEssenceCheckMatcher.group(1)));
+			}
+			else if (bloodEssenceExtractMatcher.find())
+			{
+				updateBloodEssenceCharges(getItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE) - Integer.parseInt(bloodEssenceExtractMatcher.group(1)));
+			}
+			else if (message.contains(BLOOD_ESSENCE_ACTIVATE_TEXT))
+			{
+				updateBloodEssenceCharges(MAX_BLOOD_ESSENCE_CHARGES);
+			}
+			else if (braceletOfClayCheckMatcher.find())
+			{
+				updateBraceletOfClayCharges(Integer.parseInt(braceletOfClayCheckMatcher.group(1)));
+			}
+			else if (message.equals(BRACELET_OF_CLAY_USE_TEXT) || message.equals(BRACELET_OF_CLAY_USE_TEXT_TRAHAEARN))
+			{
+				final ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+
+				// Determine if the player mined with a Bracelet of Clay equipped.
+				if (equipment != null && equipment.contains(ItemID.BRACELET_OF_CLAY))
+				{
+					int charges = Ints.constrainToRange(getItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY) - 1, 0, MAX_BRACELET_OF_CLAY_CHARGES);
+					updateBraceletOfClayCharges(charges);
+				}
+			}
+			else if (message.equals(BRACELET_OF_CLAY_BREAK_TEXT))
+			{
+				if (config.braceletOfClayNotification())
+				{
+					notifier.notify("Your bracelet of clay has crumbled to dust");
+				}
+				updateBraceletOfClayCharges(MAX_BRACELET_OF_CLAY_CHARGES);
+			}
 		}
 	}
 
@@ -545,26 +587,36 @@ public class ItemChargePlugin extends Plugin
 
 	private void updateBraceletOfSlaughterCharges(final int value)
 	{
-        setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER, value);
-        updateInfoboxes();
-    }
+		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_SLAUGHTER, value);
+		updateInfoboxes();
+	}
 
-    private void updateExpeditiousBraceletCharges(final int value) {
-        setItemCharges(ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, value);
-        updateInfoboxes();
-    }
+	private void updateExpeditiousBraceletCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_EXPEDITIOUS_BRACELET, value);
+		updateInfoboxes();
+	}
 
-    private void updateBloodEssenceCharges(final int value) {
-        setItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE, value);
-        updateInfoboxes();
-    }
+	private void updateBloodEssenceCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_BLOOD_ESSENCE, value);
+		updateInfoboxes();
+	}
 
-    private void checkDestroyWidget() {
-        final int currentTick = client.getTickCount();
-        if (lastCheckTick == currentTick) {
-            return;
-        }
-        lastCheckTick = currentTick;
+	private void updateBraceletOfClayCharges(final int value)
+	{
+		setItemCharges(ItemChargeConfig.KEY_BRACELET_OF_CLAY, value);
+		updateInfoboxes();
+	}
+
+	private void checkDestroyWidget()
+	{
+		final int currentTick = client.getTickCount();
+		if (lastCheckTick == currentTick)
+		{
+			return;
+		}
+		lastCheckTick = currentTick;
 
 		final Widget widgetDestroyItemName = client.getWidget(WidgetInfo.DESTROY_ITEM_NAME);
 		if (widgetDestroyItemName == null)
@@ -644,8 +696,8 @@ public class ItemChargePlugin extends Plugin
 
 				final String name = itemManager.getItemComposition(id).getName();
 				final BufferedImage image = itemManager.getImage(id);
-                infobox = new ItemChargeInfobox(this, image, name, charges, id);
-                infoBoxManager.addInfoBox(infobox);
+				infobox = new ItemChargeInfobox(this, image, name, charges, id);
+				infoBoxManager.addInfoBox(infobox);
 				infoboxes.put(slot, infobox);
 			}
 			else
