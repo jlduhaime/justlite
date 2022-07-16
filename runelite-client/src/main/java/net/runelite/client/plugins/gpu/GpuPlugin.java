@@ -810,11 +810,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	@Override
 	public void postDrawScene()
 	{
-		postDraw();
-	}
-
-	private void postDraw()
-	{
 		if (computeMode == ComputeMode.NONE)
 		{
 			// Upload buffers
@@ -1006,12 +1001,6 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		}
 	}
 
-	@Override
-	public void draw(int overlayColor)
-	{
-		drawFrame(overlayColor);
-	}
-
 	private void prepareInterfaceTexture(int canvasWidth, int canvasHeight)
 	{
 		if (canvasWidth != lastCanvasWidth || canvasHeight != lastCanvasHeight)
@@ -1044,7 +1033,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 		GL43C.glBindTexture(GL43C.GL_TEXTURE_2D, 0);
 	}
 
-	private void drawFrame(int overlayColor)
+	@Override
+	public void draw(int overlayColor)
 	{
 		final int canvasHeight = client.getCanvasHeight();
 		final int canvasWidth = client.getCanvasWidth();
@@ -1498,37 +1488,14 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 	{
 		if (computeMode == ComputeMode.NONE)
 		{
-			Model model = renderable instanceof Model ? (Model) renderable : renderable.getModel();
-			if (model != null)
-			{
-				// Apply height to renderable from the model
-				if (model != renderable)
-				{
-					renderable.setModelHeight(model.getModelHeight());
-				}
+			modelX = x + client.getCameraX2();
+			modelY = y + client.getCameraY2();
+			modelZ = z + client.getCameraZ2();
+			modelOrientation = orientation;
 
-				if (!isVisible(model, pitchSin, pitchCos, yawSin, yawCos, x, y, z))
-				{
-					return;
-				}
-
-				model.calculateExtreme(orientation);
-				client.checkClickbox(model, orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
-
-				modelX = x + client.getCameraX2();
-				modelY = y + client.getCameraY2();
-				modelZ = z + client.getCameraZ2();
-				modelOrientation = orientation;
-				int triangleCount = model.getFaceCount();
-				vertexBuffer.ensureCapacity(12 * triangleCount);
-				uvBuffer.ensureCapacity(12 * triangleCount);
-
-				drawingModel = true;
-
-				renderable.draw(orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
-
-				drawingModel = false;
-			}
+			drawingModel = true;
+			renderable.draw(orientation, pitchSin, pitchCos, yawSin, yawCos, x, y, z, hash);
+			drawingModel = false;
 		}
 		// Model may be in the scene buffer
 		else if (renderable instanceof Model && ((Model) renderable).getSceneId() == sceneUploader.sceneId)
@@ -1613,6 +1580,8 @@ public class GpuPlugin extends Plugin implements DrawCallbacks
 			return false;
 		}
 
+		vertexBuffer.ensureCapacity(12);
+		uvBuffer.ensureCapacity(12);
 		targetBufferOffset += sceneUploader.pushFace(model, face, true, vertexBuffer, uvBuffer, modelX, modelY, modelZ, modelOrientation);
 		return true;
 	}
